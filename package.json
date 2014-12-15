@@ -1,0 +1,28 @@
+{
+  "name": "xtuple-dashboard-anything",
+  "version": "0.0.1",
+  "description": "Dashboards",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xtuple/xtuple-dashboard-anything"
+  },
+  "keywords": [
+    "React",
+    "D3",
+    "xtuple",
+    "ERP",
+    "Grunt",
+    "Bower"
+  ],
+  "author": "xTuple",
+  "license": "CPAL",
+  "bugs": {
+    "url": "https://github.com/xtuple/xtuple-dashboard-anything/issues"
+  },
+  "homepage": "https://github.com/xtuple/xtuple-dashboard-anything",
+  "dependencies": {
+  }
+}
