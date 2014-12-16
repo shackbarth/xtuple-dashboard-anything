@@ -6,8 +6,8 @@ var React = require('react'),
   _ = require('lodash'),
   Pagination = require('./controls'),
   Chart = require('./chart'),
-  org = url.parse(window.location.href).pathname.split('/')[1],
-  url = '/' + org + '/test/discovery/v1alpha1/apis/v1alpha1/rest';
+  url = require('url'),
+  org = url.parse(window.location.href).pathname.split('/')[1];
 
 var sampleData = [
   {id: '5fbmzmtc', x: 7, y: 41, z: 6},
@@ -28,7 +28,7 @@ var App = React.createClass({
 
   componentDidMount: function () {
     $.ajax({
-      url: url,
+      url: '/' + org + '/discovery/v1alpha1/apis/v1alpha1/rest',
       dataType: "json",
       success: function (data) {
         this.setState({schema: data});
@@ -73,7 +73,7 @@ var App = React.createClass({
       path = options.path.substring(0, options.path.lastIndexOf("/"));
 
     $.ajax({
-      url: "/demo_dev/browser-api/v1/" + path,
+      url: "/" + org + "/browser-api/v1/" + path,
       dataType: "json",
       success: function (data) {
         that.groupChart(data.data.data, options);
@@ -99,4 +99,4 @@ var App = React.createClass({
   }
 });
 
-React.renderComponent(App(), document.getElementById('content'));
+React.render(App(), document.getElementById('content'));

@@ -1,4 +1,6 @@
-var d3Chart = {};
+var d3Chart = {},
+  d3 = require('d3'),
+  _ = require('lodash');
 
 d3Chart.create = function (el, props, state) {
   var svg = d3.select(el).append('svg')
@@ -61,3 +63,5 @@ d3Chart._drawPoints = function (el, scales, data, stuff) {
   point.exit()
       .remove();
 };
+
+module.exports = d3Chart;

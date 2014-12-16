@@ -1,6 +1,6 @@
 /**  @jsx React.DOM */
 React = require('react'),
-  d3Chart = require('d3');
+  d3Chart = require('./d3chart');
 
 var Chart = React.createClass({
   propTypes: {
