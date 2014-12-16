@@ -1,4 +1,13 @@
 /**  @jsx React.DOM */
+'use strict';
+
+var React = require('react'),
+  $ = require('jquery'),
+  _ = require('lodash'),
+  Pagination = require('./controls'),
+  Chart = require('./chart'),
+  org = url.parse(window.location.href).pathname.split('/')[1],
+  url = '/' + org + '/test/discovery/v1alpha1/apis/v1alpha1/rest';
 
 var sampleData = [
   {id: '5fbmzmtc', x: 7, y: 41, z: 6},
@@ -19,7 +28,7 @@ var App = React.createClass({
 
   componentDidMount: function () {
     $.ajax({
-      url: "/demo_dev/discovery/v1alpha1/apis/v1alpha1/rest",
+      url: url,
       dataType: "json",
       success: function (data) {
         this.setState({schema: data});
@@ -62,7 +71,7 @@ var App = React.createClass({
   fetchList: function (options) {
     var that = this,
       path = options.path.substring(0, options.path.lastIndexOf("/"));
-    
+
     $.ajax({
       url: "/demo_dev/browser-api/v1/" + path,
       dataType: "json",
@@ -90,4 +99,4 @@ var App = React.createClass({
   }
 });
 
-React.renderComponent(App(), document.body);
+React.renderComponent(App(), document.getElementById('content'));

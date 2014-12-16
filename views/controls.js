@@ -1,4 +1,7 @@
 /**  @jsx React.DOM */
+React = require('react'),
+  _ = require('lodash');
+
 var Pagination = React.createClass({
   propTypes: {
     schema: React.PropTypes.object,
@@ -81,4 +84,4 @@ var Pagination = React.createClass({
   }
 });
 
-
+module.exports = Pagination;

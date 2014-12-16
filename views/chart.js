@@ -1,4 +1,7 @@
 /**  @jsx React.DOM */
+React = require('react'),
+  d3Chart = require('d3');
+
 var Chart = React.createClass({
   propTypes: {
     data: React.PropTypes.array,
@@ -39,4 +42,6 @@ var Chart = React.createClass({
     );
   }
 });
+
+module.exports = Chart;
 
