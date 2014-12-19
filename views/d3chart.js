@@ -19,6 +19,18 @@ d3Chart.update = function (el, state) {
   var scales = this._scales(el, state.domain);
   console.log("d3 state", state);
   this._drawPoints(el, scales, state.data, state.stuff);
+
+  // http://bost.ocks.org/mike/bar/
+  var x = d3.scale.linear()
+    .domain([0, d3.max(data)])
+    .range([0, 420]);
+
+  d3.select(".chart")
+    .selectAll("div")
+      .data(state.stuff)
+    .enter().append("div")
+      .style("width", function (d) { return x(d) * 40 + "px"; })
+      .text(function (d) { return d.key + ": " + d.total; });
 };
 
 d3Chart.destroy = function (el) {
