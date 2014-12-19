@@ -2,7 +2,7 @@
 React = require('react'),
   _ = require('lodash');
 
-var Pagination = React.createClass({
+var Controls = React.createClass({
   propTypes: {
     schema: React.PropTypes.object,
     getData: React.PropTypes.func,
@@ -10,6 +10,14 @@ var Pagination = React.createClass({
   },
 
   render: function () {
+    if (this.state.groupBy && this.state.totalBy) {
+      this.props.fetchList({
+        path: this.state.path,
+        groupBy: this.state.groupBy,
+        totalBy: this.state.totalBy
+      });
+    }
+
     return (<div className="bg-info form form-inline">
       <form className="form form-inline" role="form">
         <div className="form-group col-md-12 bg-info">
@@ -50,16 +58,6 @@ var Pagination = React.createClass({
     </div>);
   },
 
-  componentDidUpdate: function() {
-    if(this.state && this.state.groupBy && this.state.totalBy) {
-      this.props.fetchList({
-        path: this.state.path,
-        groupBy: this.state.groupBy,
-        totalBy: this.state.totalBy
-      });
-    }
-  },
-
   handleResourceChange: function (event) {
     var recordType = event.target.value;
     this.setState({
@@ -84,4 +82,4 @@ var Pagination = React.createClass({
   }
 });
 
-module.exports = Pagination;
+module.exports = Controls;

@@ -4,7 +4,7 @@
 var React = require('react'),
   $ = require('jquery'),
   _ = require('lodash'),
-  Pagination = require('./controls'),
+  Controls = require('./controls'),
   Chart = require('./chart'),
   url = require('url'),
   org = url.parse(window.location.href).pathname.split('/')[1];
@@ -56,14 +56,18 @@ var App = React.createClass({
   render: function() {
     console.log("render", this.state.domain, this.domain);
     return (
-      <div className="App container">
-        <Chart
-          data={this.state.data}
-          stuff={this.state.stuff}
-          domain={this.state.domain} />
-        <Pagination
-          schema={this.state.schema}
-          fetchList={this.fetchList} />
+      <div className="container">
+        <div className="row">
+          <div className="col-xs-6 col-md-3">
+            <Chart
+              data={this.state.data}
+              stuff={this.state.stuff}
+              domain={this.state.domain} />
+            <Controls
+              schema={this.state.schema}
+              fetchList={this.fetchList} />
+          </div>
+        </div>
       </div>
     );
   },
