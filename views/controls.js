@@ -9,6 +9,10 @@ var Controls = React.createClass({
     fetchList: React.PropTypes.func
   },
 
+  getInitialState: function () {
+    return {groupBy : '', totalBy : '', path: ''};
+  },
+
   render: function () {
     if (this.state.groupBy && this.state.totalBy) {
       this.props.fetchList({
