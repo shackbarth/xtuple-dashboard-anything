@@ -7,15 +7,16 @@ npm install -g grunt-cli
 npm install
 ```
 
-## Run in xTuple
+## Run in xTuple project folder
 
 ```
 $ cd xtuple
 $ npm link ../xtuple-dashboard-anything
+$ npm link xtuple-dashboard-anything
 $ ./scripts/build_app.js -n -e node_modules/xtuple-dashboard-anything
 ```
 
-Then navigate to `https://host/demo_dev/npm/xtuple-dashboard-anything/public/dashboards.html`
+Then navigate to `https://{host}/{database_name}/npm/xtuple-dashboard-anything/public/`
 
 ## Development
 
