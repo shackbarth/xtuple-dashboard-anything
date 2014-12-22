@@ -22,7 +22,7 @@ d3Chart.update = function (el, state) {
 
   // http://bost.ocks.org/mike/bar/
   var x = d3.scale.linear()
-    .domain([0, d3.max(data)])
+    .domain([0, d3.max(_.map(state.stuff, function (stu) { return stu.total }))])
     .range([0, 420]);
 
   d3.select(".chart")
