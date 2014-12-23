@@ -23,7 +23,6 @@ var Chart = React.createClass({
   },
 
   getChartState: function() {
-    console.log("gcs", this.props);
     return {
       data: this.props.data,
       domain: this.props.domain,
@@ -38,7 +37,7 @@ var Chart = React.createClass({
 
   render: function() {
     return (
-      <div className="Chart"></div>
+      <div className="chart"></div>
     );
   }
 });

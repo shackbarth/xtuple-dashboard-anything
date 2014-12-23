@@ -27,56 +27,58 @@ var Controls = React.createClass({
       });
     }
 
-    return (<div className="bg-info form form-inline">
-      <form className="form form-inline" role="form">
-        <div className="form-group col-md-12 bg-info">
-          <label for="businessObject" className="col-md-2">Business Object: </label>
-          <select onChange={this.handleResourceChange} id="businessObject" className="form-control col-md-10">
-            <option value=""></option>
-            {this.props.schema && _.map(this.props.schema.resources, function (value, key) {
-              return <option value={key}>{key}</option>;
-            })}
-          </select>
-        </div>
-      </form>
-      <form className="form form-inline" role="form">
-        <div className="form-group col-md-12 bg-info">
-          <label for="filterBy" className="col-md-2">Filter By Field: </label>
-          <select onChange={this.handleFilterbyChange} id="filterBy" className="form-control col-md-10">
-            <option value=""></option>
-            {_.map(this.state && this.state.fields, function (value, key) {
-              return <option value={key}>{value.title}</option>;
-            })}
-          </select>
-          <input type="text" className="form-control" onChange={this.handleFilterbyValueChange} />
-        </div>
-      </form>
-      <form className="form form-inline" role="form">
-        <div className="form-group col-md-12 bg-info">
-          <label for="groupBy" className="col-md-2">Group By Field: </label>
-          <select onChange={this.handleGroupbyChange} id="groupBy" className="form-control col-md-10">
-            <option value=""></option>
-            {_.map(this.state && this.state.fields, function (value, key) {
-              return <option value={key}>{value.title}</option>;
-            })}
-          </select>
-        </div>
-      </form>
-      <form className="form form-inline" role="form">
-        <div className="form-group col-md-12 bg-info">
-          <label for="totalBy" className="col-md-2">Total By Field: </label>
-          <select onChange={this.handleTotalbyChange} id="totalBy" className="form-control col-md-10">
-            <option value=""></option>
-            <option value="_count">Count</option>
-            {_.map(this.state && _.omit(this.state.fields, function (value) {
-              return value.type !== "number";
-            }), function (value, key) {
-              return <option value={key}>{value.title}</option>;
-            })}
-          </select>
-        </div>
-      </form>
-    </div>);
+    return (
+      <div className="bg-primary form form-inline">
+        <form className="form form-inline" role="form">
+          <div className="form-group col-md-12 bg-primary">
+            <label for="businessObject" className="col-md-2">Business Object: </label>
+            <select onChange={this.handleResourceChange} id="businessObject" className="form-control col-md-10">
+              <option value=""></option>
+              {this.props.schema && _.map(this.props.schema.resources, function (value, key) {
+                return <option value={key}>{key}</option>;
+              })}
+            </select>
+          </div>
+        </form>
+        <form className="form form-inline" role="form">
+          <div className="form-group col-md-12 bg-primary">
+            <label for="filterBy" className="col-md-2">Filter By Field: </label>
+            <select onChange={this.handleFilterbyChange} id="filterBy" className="form-control col-md-10">
+              <option value=""></option>
+              {_.map(this.state && this.state.fields, function (value, key) {
+                return <option value={key}>{value.title}</option>;
+              })}
+            </select>
+            <input type="text" className="form-control" onChange={this.handleFilterbyValueChange} />
+          </div>
+        </form>
+        <form className="form form-inline" role="form">
+          <div className="form-group col-md-12 bg-primary">
+            <label for="groupBy" className="col-md-2">Group By Field: </label>
+            <select onChange={this.handleGroupbyChange} id="groupBy" className="form-control col-md-10">
+              <option value=""></option>
+              {_.map(this.state && this.state.fields, function (value, key) {
+                return <option value={key}>{value.title}</option>;
+              })}
+            </select>
+          </div>
+        </form>
+        <form className="form form-inline" role="form">
+          <div className="form-group col-md-12 bg-primary">
+            <label for="totalBy" className="col-md-2">Total By Field: </label>
+            <select onChange={this.handleTotalbyChange} id="totalBy" className="form-control col-md-10">
+              <option value=""></option>
+              <option value="_count">Count</option>
+              {_.map(this.state && _.omit(this.state.fields, function (value) {
+                return value.type !== "number";
+              }), function (value, key) {
+                return <option value={key}>{value.title}</option>;
+              })}
+            </select>
+          </div>
+        </form>
+      </div>
+    );
   },
 
   handleResourceChange: function (event) {

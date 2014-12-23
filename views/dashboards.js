@@ -57,16 +57,14 @@ var App = React.createClass({
     console.log("render", this.state.domain, this.domain);
     return (
       <div className="container">
-        <div className="row">
-          <div>
-            <Chart
-              data={this.state.data}
-              stuff={this.state.stuff}
-              domain={this.state.domain} />
-            <Controls
-              schema={this.state.schema}
-              fetchList={this.fetchList} />
-          </div>
+        <div>
+          <Chart
+            data={this.state.data}
+            stuff={this.state.stuff}
+            domain={this.state.domain} />
+          <Controls
+            schema={this.state.schema}
+            fetchList={this.fetchList} />
         </div>
       </div>
     );
