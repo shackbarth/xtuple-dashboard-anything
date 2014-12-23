@@ -16,7 +16,7 @@ $ npm link xtuple-dashboard-anything
 $ ./scripts/build_app.js -n -e node_modules/xtuple-dashboard-anything
 ```
 
-Then navigate to `https://{host}/{database_name}/npm/xtuple-dashboard-anything/public/`
+Then navigate to `https://{host}/{database_name}/npm/xtuple-dashboard-anything/public/index.html`
 
 ## Development
 
