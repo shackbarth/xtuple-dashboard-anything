@@ -16,7 +16,7 @@ var sampleData = [
 ];
 
 var App = React.createClass({
-  getInitialState: function() {
+  getInitialState: function () {
     console.log("initialstate");
     var domain = { x: [0, 30], y: [0, 100]};
     return {
@@ -53,7 +53,7 @@ var App = React.createClass({
     });
   },
 
-  render: function() {
+  render: function () {
     console.log("render", this.state.domain, this.domain);
     return (
       <div className="container">
@@ -74,13 +74,33 @@ var App = React.createClass({
 
   fetchList: function (options) {
     var that = this,
-      path = options.path.substring(0, options.path.lastIndexOf("/"));
+      path = options.path.substring(0, options.path.lastIndexOf("/")),
+      url = "/" + org + "/browser-api/v1/" + path,
+      filter = {};
+
+    if (options.filterBy && options.filterByValue) {
+      filter["query[" + options.filterBy + "][EQUALS]"] = options.filterByValue;
+    }
+
 
     $.ajax({
-      url: "/" + org + "/browser-api/v1/" + path,
+      url: url,
+      data: _.extend({}, filter, {count: true}),
       dataType: "json",
-      success: function (data) {
-        that.groupChart(data.data.data, options);
+      success: function (countData) {
+        console.log("count data", countData, countData.data.data[0].count);
+        if (countData.data.data[0].count > 100) {
+          alert("Too large a query for operational dashboard. Restrict your filter or invest in real BI!");
+          return;
+        }
+        $.ajax({
+          url: url,
+          data: filter,
+          dataType: "json",
+          success: function (data) {
+            that.groupChart(data.data.data, options);
+          }.bind(this)
+        });
       }.bind(this)
     });
   },
