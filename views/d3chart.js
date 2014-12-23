@@ -18,7 +18,7 @@ d3Chart.update = function (el, state) {
   // Re-compute the scales, and render the data points
   var scales = this._scales(el, state.domain);
   console.log("d3 state", state);
-  this._drawPoints(el, scales, state.data, state.stuff);
+  this._drawPoints(el, scales, _.pluck(state.stuff, "total"), state.stuff);
 
   // http://bost.ocks.org/mike/bar/
   var x = d3.scale.linear()
@@ -29,7 +29,7 @@ d3Chart.update = function (el, state) {
     .selectAll("div")
       .data(state.stuff)
     .enter().append("div")
-      .style("width", function (d) { return x(d) * 40 + "px"; })
+      .style("width", function (d) { return x(d.total) * 40 + "px"; })
       .text(function (d) { return d.key + ": " + d.total; });
 };
 

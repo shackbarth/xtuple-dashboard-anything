@@ -58,7 +58,7 @@ var App = React.createClass({
     return (
       <div className="container">
         <div className="row">
-          <div className="App container">
+          <div>
             <Chart
               data={this.state.data}
               stuff={this.state.stuff}
