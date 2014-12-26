@@ -6,43 +6,54 @@ var _ = require("lodash");
 jest.dontMock('../views/controls');
 
 describe('dashboard control', function() {
-  it('renders appropriately', function() {
-    var React = require('react/addons');
-    var Controls = require('../views/controls.js');
-    var TestUtils = React.addons.TestUtils;
+  var props;
 
-    var schema = {
-      resources: {
-        Foo: {
-          methods: {
-            get: {
-              path: "foo-get"
+  beforeEach(function () {
+    props = {
+      schema: {
+        resources: {
+          Foo: {
+            methods: {
+              get: {
+                path: "foo-get"
+              }
+            }
+          }
+        },
+        schemas: {
+          Foo: {
+            properties: {
+              propA: {
+                title: "Prop A"
+              },
+              propB: {
+                title: "Prop B"
+              }
             }
           }
         }
       },
-      schemas: {
-        Foo: {
-          properties: {
-            propA: {
-              title: "Prop A"
-            },
-            propB: {
-              title: "Prop B"
-            }
-          }
-        }
-      }
+      fetchList: _.noop
     };
-    var fetchList = function (options) {
-      expect(options.path).toEqual("foo-get");
-      // on jasmine 1.3 with no done() this isn't very reliable
-      console.log("now we're done");
+    spyOn(props, "fetchList");
+
+  });
+
+  it('captures user input and fetches data appropriately', function() {
+    var React = require('react/addons');
+    var Controls = require('../views/controls.js');
+    var TestUtils = React.addons.TestUtils;
+    var expectedFetch = {
+      path: 'foo-get',
+      groupBy: 'propA',
+      filterBy: undefined,
+      filterByValue: undefined,
+      totalBy: '_count'
     };
 
     // Render a control in the document
     var controls = TestUtils.renderIntoDocument(
-      <Controls schema={schema} getData={_.noop} fetchList={fetchList} />
+      <Controls schema={props.schema} getData={_.noop} fetchList={props.fetchList} />
     );
 
     var label = TestUtils.findRenderedDOMComponentWithClass(controls, 'business-object-label');
@@ -59,5 +70,8 @@ describe('dashboard control', function() {
     var totalbyDropdown =
       TestUtils.findRenderedDOMComponentWithClass(controls, 'total-by');
     TestUtils.Simulate.change(totalbyDropdown, {target: {value: "_count"}});
+
+    expect(props.fetchList).toHaveBeenCalledWith(expectedFetch);
+
   });
 });
