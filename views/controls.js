@@ -30,8 +30,9 @@ var Controls = React.createClass({
     return (<div className="bg-info form form-inline">
       <form className="form form-inline" role="form">
         <div className="form-group col-md-12 bg-info">
-          <label for="businessObject" className="col-md-2">Business Object: </label>
-          <select onChange={this.handleResourceChange} id="businessObject" className="form-control col-md-10">
+          <label for="businessObject" className="col-md-2 business-object-label">Business Object: </label>
+          <select onChange={this.handleResourceChange} id="businessObject"
+              className="form-control col-md-10 business-object">
             <option value=""></option>
             {this.props.schema && _.map(this.props.schema.resources, function (value, key) {
               return <option value={key}>{key}</option>;
