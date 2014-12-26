@@ -43,7 +43,8 @@ var Controls = React.createClass({
       <form className="form form-inline" role="form">
         <div className="form-group col-md-12 bg-info">
           <label for="filterBy" className="col-md-2">Filter By Field: </label>
-          <select onChange={this.handleFilterbyChange} id="filterBy" className="form-control col-md-10">
+          <select onChange={this.handleFilterbyChange} id="filterBy"
+              className="form-control col-md-10 filter-by">
             <option value=""></option>
             {_.map(this.state && this.state.fields, function (value, key) {
               return <option value={key}>{value.title}</option>;
@@ -55,7 +56,8 @@ var Controls = React.createClass({
       <form className="form form-inline" role="form">
         <div className="form-group col-md-12 bg-info">
           <label for="groupBy" className="col-md-2">Group By Field: </label>
-          <select onChange={this.handleGroupbyChange} id="groupBy" className="form-control col-md-10">
+          <select onChange={this.handleGroupbyChange} id="groupBy"
+              className="form-control col-md-10 group-by">
             <option value=""></option>
             {_.map(this.state && this.state.fields, function (value, key) {
               return <option value={key}>{value.title}</option>;
@@ -66,7 +68,8 @@ var Controls = React.createClass({
       <form className="form form-inline" role="form">
         <div className="form-group col-md-12 bg-info">
           <label for="totalBy" className="col-md-2">Total By Field: </label>
-          <select onChange={this.handleTotalbyChange} id="totalBy" className="form-control col-md-10">
+          <select onChange={this.handleTotalbyChange} id="totalBy"
+              className="form-control col-md-10 total-by">
             <option value=""></option>
             <option value="_count">Count</option>
             {_.map(this.state && _.omit(this.state.fields, function (value) {

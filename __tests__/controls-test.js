@@ -13,30 +13,51 @@ describe('dashboard control', function() {
 
     var schema = {
       resources: {
-        foo: "bar",
-        baz: "Qux"
+        Foo: {
+          methods: {
+            get: {
+              path: "foo-get"
+            }
+          }
+        }
+      },
+      schemas: {
+        Foo: {
+          properties: {
+            propA: {
+              title: "Prop A"
+            },
+            propB: {
+              title: "Prop B"
+            }
+          }
+        }
       }
     };
-    var getData = _.noop;
     var fetchList = function (options) {
-      console.log("fetch list", options);
+      expect(options.path).toEqual("foo-get");
+      // on jasmine 1.3 with no done() this isn't very reliable
+      console.log("now we're done");
     };
 
     // Render a control in the document
     var controls = TestUtils.renderIntoDocument(
-      <Controls schema={schema} getData={getData} fetchList={fetchList} />
+      <Controls schema={schema} getData={_.noop} fetchList={fetchList} />
     );
 
-    // Verify that it's Off by default
     var label = TestUtils.findRenderedDOMComponentWithClass(controls, 'business-object-label');
     expect(label.getDOMNode().textContent).toEqual('Business Object: ');
 
-    //var businessObjectDropdown =
-    //  TestUtils.findRenderedDOMComponentWithClass(controls, 'business-object');
-    //console.log("debug", businessObjectDropdown.getDOMNode().length,
-    //  businessObjectDropdown.getDOMNode().textContent);
+    var businessObjectDropdown =
+      TestUtils.findRenderedDOMComponentWithClass(controls, 'business-object');
+    TestUtils.Simulate.change(businessObjectDropdown, {target: {value: "Foo"}});
 
-    //TestUtils.Simulate.keyDown(businessObjectDropdown, {key: "f"});
-    //expect(label.getDOMNode().textContent).toEqual('On');
+    var groupbyDropdown =
+      TestUtils.findRenderedDOMComponentWithClass(controls, 'group-by');
+    TestUtils.Simulate.change(groupbyDropdown, {target: {value: "propA"}});
+
+    var totalbyDropdown =
+      TestUtils.findRenderedDOMComponentWithClass(controls, 'total-by');
+    TestUtils.Simulate.change(totalbyDropdown, {target: {value: "_count"}});
   });
 });
