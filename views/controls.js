@@ -10,7 +10,14 @@ var Controls = React.createClass({
   },
 
   getInitialState: function () {
-    return {groupBy : '', totalBy : '', path: '', filterFields: 1};
+    return {
+      groupBy : '',
+      totalBy : '',
+      path: '',
+      filterFields: 1,
+      filterByArray: [],
+      filterByValueArray: []
+    };
   },
 
   render: function () {
@@ -19,8 +26,8 @@ var Controls = React.createClass({
       this.props.fetchList({
         path: this.state.path,
         groupBy: this.state.groupBy,
-        filterBy: this.state.filterBy,
-        filterByValue: this.state.filterByValue,
+        filterByArray: this.state.filterByArray,
+        filterByValueArray: this.state.filterByValueArray,
         totalBy: this.state.totalBy
       });
     }
@@ -50,7 +57,7 @@ var Controls = React.createClass({
               return <option value={key}>{value.title}</option>;
             })}
           </select>
-          <input type="text" className="form-control" id={"filterBy" + i}
+          <input type="text" className="form-control" id={"filterByValue" + i}
             onChange={that.handleFilterbyValueChange} />
           <button type="button" className="btn btn-primary"
               style={i + 1 !== that.state.filterFields ? {display:"none"} : {}}
@@ -111,17 +118,22 @@ var Controls = React.createClass({
   },
 
   handleFilterbyChange: function (event) {
-    var index = Number(event.target.id.replace("filterBy", ""));
     var fieldName = event.target.value;
+    var index = Number(event.target.id.replace("filterBy", ""));
+    var filterByArray = _.clone(this.state.filterByArray);
+    filterByArray[index] = fieldName;
     this.setState({
-      filterBy: fieldName
+      filterByArray: filterByArray
     });
   },
 
   handleFilterbyValueChange: function (event) {
     var fieldName = event.target.value;
+    var index = Number(event.target.id.replace("filterByValue", ""));
+    var filterByValueArray = _.clone(this.state.filterByValueArray);
+    filterByValueArray[index] = fieldName;
     this.setState({
-      filterByValue: fieldName
+      filterByValueArray: filterByValueArray
     });
   },
 
@@ -134,10 +146,11 @@ var Controls = React.createClass({
 
   shouldComponentUpdate: function(nextProps, nextState) {
     var that = this;
-    var relevantFields = ["groupBy", "totalBy", "recordType", "filterFields", "filterBy", "filterByValue"];
+    var relevantFields = ["groupBy", "totalBy", "recordType", "filterFields",
+      "filterByArray", "filterByValueArray"];
     var fieldUpdate = false;
     _.each(relevantFields, function (field) {
-      if(that.state[field] !== nextState[field]) {
+      if(!_.isEqual(that.state[field], nextState[field])) {
         fieldUpdate = true;
       }
     });

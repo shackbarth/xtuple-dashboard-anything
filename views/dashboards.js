@@ -75,10 +75,11 @@ var App = React.createClass({
       url = "/" + org + "/browser-api/v1/" + path,
       filter = {};
 
-    if (options.filterBy && options.filterByValue) {
-      filter["query[" + options.filterBy + "][EQUALS]"] = options.filterByValue;
-    }
-
+    _.times(options.filterByArray.length, function (i) {
+      if (options.filterByArray[i] && options.filterByValueArray[i]) {
+        filter["query[" + options.filterByArray[i] + "][EQUALS]"] = options.filterByValueArray[i];
+      }
+    });
 
     $.ajax({
       url: url,
