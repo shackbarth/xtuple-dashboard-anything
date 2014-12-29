@@ -4,6 +4,7 @@ var _ = require("lodash");
 
 // __tests__/control-test.js
 jest.dontMock('../views/controls');
+jest.dontMock('lodash');
 
 describe('dashboard control', function() {
   var props;
@@ -46,8 +47,8 @@ describe('dashboard control', function() {
     var expectedFetch = {
       path: 'foo-get',
       groupBy: 'propA',
-      filterBy: undefined,
-      filterByValue: undefined,
+      filterByArray: [],
+      filterByValueArray: [],
       totalBy: '_count'
     };
 
