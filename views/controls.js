@@ -10,10 +10,11 @@ var Controls = React.createClass({
   },
 
   getInitialState: function () {
-    return {groupBy : '', totalBy : '', path: ''};
+    return {groupBy : '', totalBy : '', path: '', filterFields: 1};
   },
 
   render: function () {
+    var that = this;
     if (this.state.groupBy && this.state.totalBy) {
       this.props.fetchList({
         path: this.state.path,
@@ -37,19 +38,28 @@ var Controls = React.createClass({
           </select>
         </div>
       </form>
-      <form className="form form-inline" role="form">
+    {_.times(this.state.filterFields, function (i) {
+
+      return <form className="form form-inline" role="form">
         <div className="form-group col-md-12 bg-info">
           <label for="filterBy" className="col-md-2">Filter By Field: </label>
-          <select onChange={this.handleFilterbyChange} id="filterBy"
+          <select onChange={that.handleFilterbyChange} id={"filterBy" + i}
               className="form-control col-md-10 filter-by">
             <option value=""></option>
-            {_.map(this.state && this.state.fields, function (value, key) {
+          {_.map(that.state && that.state.fields, function (value, key) {
               return <option value={key}>{value.title}</option>;
             })}
           </select>
-          <input type="text" className="form-control" onChange={this.handleFilterbyValueChange} />
+          <input type="text" className="form-control" id={"filterBy" + i}
+            onChange={that.handleFilterbyValueChange} />
+          <button type="button" className="btn btn-primary"
+              style={i + 1 !== that.state.filterFields ? {display:"none"} : {}}
+              onClick={that.addFilterField}>
+            <span className="glyphicon glyphicon-plus"></span>
+          </button>
         </div>
       </form>
+    })}
       <form className="form form-inline" role="form">
         <div className="form-group col-md-12 bg-info">
           <label for="groupBy" className="col-md-2">Group By Field: </label>
@@ -80,20 +90,8 @@ var Controls = React.createClass({
     </div>);
   },
 
-  shouldComponentUpdate: function(nextProps, nextState) {
-    var that = this;
-    var relevantFields = ["groupBy", "totalBy", "recordType", "filterBy", "filterByValue"];
-    var fieldUpdate = false;
-    _.each(relevantFields, function (field) {
-      if(that.state[field] !== nextState[field]) {
-        fieldUpdate = true;
-        return true;
-      }
-    });
-    if (!this.props.schema || fieldUpdate) {
-      return true;
-    }
-    return false;
+  addFilterField: function (event) {
+    this.setState({filterFields: this.state.filterFields + 1});
   },
 
   handleResourceChange: function (event) {
@@ -112,8 +110,8 @@ var Controls = React.createClass({
     });
   },
 
-  // XXX TODO we'll want to allow for n filters
   handleFilterbyChange: function (event) {
+    var index = Number(event.target.id.replace("filterBy", ""));
     var fieldName = event.target.value;
     this.setState({
       filterBy: fieldName
@@ -132,6 +130,18 @@ var Controls = React.createClass({
     this.setState({
       totalBy: fieldName
     });
+  },
+
+  shouldComponentUpdate: function(nextProps, nextState) {
+    var that = this;
+    var relevantFields = ["groupBy", "totalBy", "recordType", "filterFields", "filterBy", "filterByValue"];
+    var fieldUpdate = false;
+    _.each(relevantFields, function (field) {
+      if(that.state[field] !== nextState[field]) {
+        fieldUpdate = true;
+      }
+    });
+    return !this.props.schema || fieldUpdate;
   }
 });
 
