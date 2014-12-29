@@ -17,7 +17,6 @@ var sampleData = [
 
 var App = React.createClass({
   getInitialState: function () {
-    console.log("initialstate");
     var domain = { x: [0, 30], y: [0, 100]};
     return {
       data: this.getData(domain),
@@ -47,14 +46,12 @@ var App = React.createClass({
   },
 
   getData: function (domain) {
-    console.log("about to filter", domain);
     return _.filter(sampleData, function (datum) {
       return datum.x >= domain.x[0] && datum.x <= domain.x[1];
     });
   },
 
   render: function () {
-    console.log("render", this.state.domain, this.domain);
     return (
       <div className="container">
         <div className="row">
@@ -88,7 +85,6 @@ var App = React.createClass({
       data: _.extend({}, filter, {count: true}),
       dataType: "json",
       success: function (countData) {
-        console.log("count data", countData, countData.data.data[0].count);
         if (countData.data.data[0].count > 100) {
           alert("Too large a query for operational dashboard. Restrict your filter or invest in real BI!");
           return;

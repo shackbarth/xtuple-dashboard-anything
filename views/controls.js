@@ -2,8 +2,6 @@
 React = require('react'),
   _ = require('lodash');
 
-var once = false;
-
 var Controls = React.createClass({
   propTypes: {
     schema: React.PropTypes.object,
@@ -16,8 +14,7 @@ var Controls = React.createClass({
   },
 
   render: function () {
-    if (this.state.groupBy && this.state.totalBy && !once) {
-      once = true;
+    if (this.state.groupBy && this.state.totalBy) {
       this.props.fetchList({
         path: this.state.path,
         groupBy: this.state.groupBy,
@@ -81,6 +78,22 @@ var Controls = React.createClass({
         </div>
       </form>
     </div>);
+  },
+
+  shouldComponentUpdate: function(nextProps, nextState) {
+    var that = this;
+    var relevantFields = ["groupBy", "totalBy", "recordType", "filterBy", "filterByValue"];
+    var fieldUpdate = false;
+    _.each(relevantFields, function (field) {
+      if(that.state[field] !== nextState[field]) {
+        fieldUpdate = true;
+        return true;
+      }
+    });
+    if (!this.props.schema || fieldUpdate) {
+      return true;
+    }
+    return false;
   },
 
   handleResourceChange: function (event) {
