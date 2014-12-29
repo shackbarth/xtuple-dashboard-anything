@@ -6,7 +6,7 @@ module.exports = function (grunt) {
     watch: {
       react: {
         files: ['views/**/*.js', 'Gruntfile.js'],
-        tasks: ['browserify']
+        tasks: ['browserify', 'jshint']
       }
     },
     browserify: {
