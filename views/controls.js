@@ -35,10 +35,10 @@ var Controls = React.createClass({
     return (
       <form className="form-horizontal" role="form">
         <div className="form-group">
-          <label for="businessObject" className="col-md-2 control-label">Business Object: </label>
+          <label for="businessObject" className="col-md-2 control-label business-object-label">Business Object: </label>
           <div className="col-md-3">
             <select onChange={this.handleResourceChange} id="businessObject"
-                className="form-control">
+                className="form-control business-object">
               <option value=""></option>
               {this.props.schema && _.map(this.props.schema.resources, function (value, key) {
                 return <option value={key}>{key}</option>;
@@ -74,7 +74,7 @@ var Controls = React.createClass({
           <label for="groupBy" className="col-md-2 control-label">Group By Field: </label>
           <div className="col-md-2">
             <select onChange={this.handleGroupbyChange} id="groupBy"
-                className="form-control">
+                className="form-control group-by">
               <option value=""></option>
               {_.map(this.state && this.state.fields, function (value, key) {
                 return <option value={key}>{value.title}</option>;
@@ -86,7 +86,7 @@ var Controls = React.createClass({
           <label for="totalBy" className="col-md-2 control-label">Total By Field: </label>
           <div className="col-md-2">
             <select onChange={this.handleTotalbyChange} id="totalBy"
-                className="form-control">
+                className="form-control total-by">
               <option value=""></option>
               <option value="_count">Count</option>
               {_.map(this.state && _.omit(this.state.fields, function (value) {
@@ -148,13 +148,13 @@ var Controls = React.createClass({
     });
   },
 
-  shouldComponentUpdate: function(nextProps, nextState) {
+  shouldComponentUpdate: function (nextProps, nextState) {
     var that = this;
     var relevantFields = ["groupBy", "totalBy", "recordType", "filterFields",
       "filterByArray", "filterByValueArray"];
     var fieldUpdate = false;
     _.each(relevantFields, function (field) {
-      if(!_.isEqual(that.state[field], nextState[field])) {
+      if (!_.isEqual(that.state[field], nextState[field])) {
         fieldUpdate = true;
       }
     });
