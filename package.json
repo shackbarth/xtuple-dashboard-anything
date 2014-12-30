@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "description": "Dashboards",
   "scripts": {
-    "postinstall": "bower install && grunt"
+    "postinstall": "bower install && grunt",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,7 @@
   },
   "homepage": "https://github.com/xtuple/xtuple-dashboard-anything",
   "dependencies": {
+    "bower": "^1.3.12",
     "d3": "^3.5.2",
     "grunt": "^0.4.5",
     "grunt-browserify": "^3.2.1",
@@ -46,8 +48,5 @@
   "jest": {
     "scriptPreprocessor": "./preprocessor.js",
     "unmockedModulePathPatterns": ["./node_modules/react"]
-  },
-  "scripts": {
-    "test": "jest"
   }
 }
