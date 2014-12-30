@@ -57,19 +57,16 @@ describe('dashboard control', function() {
       <Controls schema={props.schema} getData={_.noop} fetchList={props.fetchList} />
     );
 
-    var label = TestUtils.findRenderedDOMComponentWithClass(controls, 'business-object-label');
-    expect(label.getDOMNode().textContent).toEqual('Business Object: ');
+    var label = controls.refs.businessObjectLabel.getDOMNode();
+    expect(label.textContent).toEqual('Business Object:');
 
-    var businessObjectDropdown =
-      TestUtils.findRenderedDOMComponentWithClass(controls, 'business-object');
+    var businessObjectDropdown = controls.refs.businessObject.getDOMNode();
     TestUtils.Simulate.change(businessObjectDropdown, {target: {value: "Foo"}});
 
-    var groupbyDropdown =
-      TestUtils.findRenderedDOMComponentWithClass(controls, 'group-by');
+    var groupbyDropdown = controls.refs.groupBy.getDOMNode();
     TestUtils.Simulate.change(groupbyDropdown, {target: {value: "propA"}});
 
-    var totalbyDropdown =
-      TestUtils.findRenderedDOMComponentWithClass(controls, 'total-by');
+    var totalbyDropdown = controls.refs.totalBy.getDOMNode();
     TestUtils.Simulate.change(totalbyDropdown, {target: {value: "_count"}});
 
     expect(props.fetchList).toHaveBeenCalledWith(expectedFetch);
