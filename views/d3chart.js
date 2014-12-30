@@ -4,8 +4,7 @@ var d3Chart = {},
 
 d3Chart.create = function (el, props, state) {
     d3.select(".chart")
-      .style('width', props.width)
-      .style('height', props.height);
+      .style('min-height', props.height);
 
   this.update(el, state);
 };

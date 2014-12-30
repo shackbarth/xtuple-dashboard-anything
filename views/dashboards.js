@@ -54,14 +54,23 @@ var App = React.createClass({
   render: function () {
     return (
       <div className="container">
-        <div>
-          <Chart
-            data={this.state.data}
-            stuff={this.state.stuff}
-            domain={this.state.domain} />
-          <Controls
-            schema={this.state.schema}
-            fetchList={this.fetchList} />
+        <div className="panel panel-info">
+          <div className="panel-heading">
+            <h3 className="panel-title">Chart</h3>
+          </div>
+          <div className="panel-body">
+            <Chart
+              data={this.state.data}
+              stuff={this.state.stuff}
+              domain={this.state.domain}
+            />
+          </div>
+          <div className="panel-footer">
+            <Controls
+              schema={this.state.schema}
+              fetchList={this.fetchList}
+            />
+          </div>
         </div>
       </div>
     );

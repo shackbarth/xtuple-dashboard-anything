@@ -33,58 +33,60 @@ var Controls = React.createClass({
     }
 
     return (
-      <div className="bg-info form form-inline">
-        <form className="form form-inline" role="form">
-          <div className="form-group col-md-12 bg-info">
-            <label for="businessObject" className="col-md-2 business-object-label">Business Object: </label>
+      <form className="form-horizontal" role="form">
+        <div className="form-group">
+          <label for="businessObject" className="col-md-2 control-label">Business Object: </label>
+          <div className="col-md-3">
             <select onChange={this.handleResourceChange} id="businessObject"
-                className="form-control col-md-10 business-object">
+                className="form-control">
               <option value=""></option>
               {this.props.schema && _.map(this.props.schema.resources, function (value, key) {
                 return <option value={key}>{key}</option>;
               })}
             </select>
           </div>
-        </form>
-      {_.times(this.state.filterFields, function (i) {
+        </div>
+    {_.times(this.state.filterFields, function (i) {
 
-        return <form className="form form-inline" role="form">
-          <div className="form-group col-md-12 bg-info">
-            <label for="filterBy" className="col-md-2">Filter By Field: </label>
-            <select onChange={that.handleFilterbyChange} id={"filterBy" + i}
-                className="form-control col-md-10 filter-by">
-              <option value=""></option>
-            {_.map(that.state && that.state.fields, function (value, key) {
-                return <option value={key}>{value.title}</option>;
-              })}
-            </select>
-            <input type="text" className="form-control" id={"filterByValue" + i}
-              onChange={that.handleFilterbyValueChange} />
-            <button type="button" className="btn btn-primary"
-                style={i + 1 !== that.state.filterFields ? {display:"none"} : {}}
-                onClick={that.addFilterField}>
-              <span className="glyphicon glyphicon-plus"></span>
-            </button>
-          </div>
-        </form>
-      })}
-        <form className="form form-inline" role="form">
-          <div className="form-group col-md-12 bg-info">
-            <label for="groupBy" className="col-md-2">Group By Field: </label>
+      return <div className="form-group">
+        <label for="filterBy" className="col-md-2 control-label">Filter By Field: </label>
+        <div className="col-md-2">
+          <select onChange={that.handleFilterbyChange} id={"filterBy" + i}
+              className="form-control">
+            <option value=""></option>
+          {_.map(that.state && that.state.fields, function (value, key) {
+              return <option value={key}>{value.title}</option>;
+            })}
+          </select>
+        </div>
+        <div className="col-md-2">
+          <input type="text" className="form-control" id={"filterByValue" + i}
+            onChange={that.handleFilterbyValueChange} />
+        </div>
+        <button type="button" className="btn btn-info"
+            style={i + 1 !== that.state.filterFields ? {display:"none"} : {}}
+            onClick={that.addFilterField}>
+          <span className="glyphicon glyphicon-plus"></span>
+        </button>
+      </div>
+    })}
+        <div className="form-group">
+          <label for="groupBy" className="col-md-2 control-label">Group By Field: </label>
+          <div className="col-md-2">
             <select onChange={this.handleGroupbyChange} id="groupBy"
-                className="form-control col-md-10 group-by">
+                className="form-control">
               <option value=""></option>
               {_.map(this.state && this.state.fields, function (value, key) {
                 return <option value={key}>{value.title}</option>;
               })}
             </select>
           </div>
-        </form>
-        <form className="form form-inline" role="form">
-          <div className="form-group col-md-12 bg-info">
-            <label for="totalBy" className="col-md-2">Total By Field: </label>
+        </div>
+        <div className="form-group">
+          <label for="totalBy" className="col-md-2 control-label">Total By Field: </label>
+          <div className="col-md-2">
             <select onChange={this.handleTotalbyChange} id="totalBy"
-                className="form-control col-md-10 total-by">
+                className="form-control">
               <option value=""></option>
               <option value="_count">Count</option>
               {_.map(this.state && _.omit(this.state.fields, function (value) {
@@ -94,8 +96,8 @@ var Controls = React.createClass({
               })}
             </select>
           </div>
-        </form>
-      </div>
+        </div>
+      </form>
     );
   },
 

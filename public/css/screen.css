@@ -1,9 +1,15 @@
+body {
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #fff;
+}
 
 .chart div {
-  font: 10px sans-serif;
-  background-color: steelblue;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  background-color: #149c82;
   text-align: right;
-  padding: 3px;
-  margin: 1px;
-  color: white;
+  padding: 5px;
+  margin: 4px;
+  color: #fff;
 }
