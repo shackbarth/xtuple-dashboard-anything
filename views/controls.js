@@ -9,6 +9,14 @@ var Controls = React.createClass({
     fetchList: React.PropTypes.func
   },
 
+  getDefaultProps: function () {
+    return {
+      schema: {},
+      getData: null,
+      fetchList: null
+    };
+  },
+
   getInitialState: function () {
     return {
       groupBy : '',
