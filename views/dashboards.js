@@ -26,11 +26,12 @@ var App = React.createClass({
     };
   },
 
-  componentDidMount: function () {
+  componentWillMount: function () {
     $.ajax({
       url: '/' + org + '/discovery/v1alpha1/apis/v1alpha1/rest',
       dataType: "json",
       success: function (data) {
+        // TODO: this should set the state.schema on the controls
         this.setState({schema: data});
       }.bind(this)
     });
