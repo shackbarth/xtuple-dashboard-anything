@@ -6,6 +6,7 @@ var React = require('react'),
   _ = require('lodash'),
   Controls = require('./controls'),
   PieChart = require('./pie-chart'),
+  DonutChart = require('./donut-chart'),
   BarChart = require('./bar-chart'),
   url = require('url'),
   org = url.parse(window.location.href).pathname.split('/')[1];
@@ -49,6 +50,10 @@ var App = React.createClass({
     var chart;
     if(this.state.chartType === "bar") {
       chart = <BarChart
+        data={this.state.data}
+      />;
+    } else if(this.state.chartType === "donut") {
+      chart = <DonutChart
         data={this.state.data}
       />;
     } else {

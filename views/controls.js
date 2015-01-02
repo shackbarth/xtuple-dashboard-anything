@@ -108,6 +108,7 @@ var Controls = React.createClass({
             <select onChange={this.handleChartTypeChange} ref="chartType" id="chartType"
                 className="form-control">
               <option value="bar">Bar</option>
+              <option value="donut">Donut</option>
               <option value="pie">Pie</option>
               {totals}
             </select>
