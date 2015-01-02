@@ -1,27 +1,24 @@
 var d3Chart = {},
   c3 = require('c3'),
+  chart,
   d3 = require('d3'),
   _ = require('lodash');
 
 
 d3Chart.create = function (el, props, state) {
 
-var chart = c3.generate({
-  data: {
-    columns: [
-      ['data1', 30],
-      ['data2', 120],
-    ],
-    bindto: ".chart",
-    type : 'donut',
-    onclick: function (d, i) { console.log("onclick", d, i); },
-    onmouseover: function (d, i) { console.log("onmouseover", d, i); },
-    onmouseout: function (d, i) { console.log("onmouseout", d, i); }
-  },
-  donut: {
-    title: "Iris Petal Width"
-  }
-});
+  chart = c3.generate({
+    data: {
+      columns: [
+      ],
+      bindto: ".chart",
+      type : 'donut'
+    },
+    donut: {
+      title: ""
+    }
+  });
+  this.update(el, state);
     /*
     d3.select(".chart")
       .style('min-height', props.height);
@@ -31,6 +28,15 @@ var chart = c3.generate({
 };
 
 d3Chart.update = function (el, state) {
+  var data = _.map(state.data, function (datum) {
+    return [datum.key, datum.total]
+  });
+  chart.load({
+    columns: data,
+    unload: null
+  });
+
+  /*
   // http://bost.ocks.org/mike/bar/
   var x = d3.scale.linear()
     .domain([0, d3.max(_.map(state.data, function (datum) { return datum.total }))])
@@ -42,6 +48,7 @@ d3Chart.update = function (el, state) {
     .enter().append("div")
       .style("width", function (d) { return x(d) * 40 + "px"; })
       .text(function (d) { return d.key + ": " + d.total; });
+  */
 };
 
 d3Chart.destroy = function (el) {
