@@ -4,6 +4,8 @@ var d3Chart = {},
   pie, svg, arc, color;
 
 d3Chart.create = function (el, props, state) {
+  d3.select(".chart")
+    .style('min-height', props.height);
 
   var width = 960,
     height = 500,
