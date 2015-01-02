@@ -173,7 +173,7 @@ var Controls = React.createClass({
         fieldUpdate = true;
       }
     });
-    return !this.props.schema || fieldUpdate;
+    return !this.props.schema.basePath || fieldUpdate;
   }
 });
 
