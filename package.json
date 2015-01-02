@@ -28,6 +28,7 @@
   },
   "homepage": "https://github.com/xtuple/xtuple-dashboard-anything",
   "dependencies": {
+    "bn.js": "0.15.2",
     "bower": "^1.3.12",
     "d3": "^3.5.2",
     "grunt": "^0.4.5",
@@ -38,6 +39,7 @@
     "jquery": "^2.1.1",
     "jsxhint": "^0.9.0",
     "lodash": "^2.4.1",
+    "miller-rabin": "1.1.1",
     "react": "^0.12.1",
     "react-tools": "^0.12.1"
   },
@@ -47,6 +49,8 @@
   },
   "jest": {
     "scriptPreprocessor": "./preprocessor.js",
-    "unmockedModulePathPatterns": ["./node_modules/react"]
+    "unmockedModulePathPatterns": [
+      "./node_modules/react"
+    ]
   }
 }
