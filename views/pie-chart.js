@@ -5,6 +5,9 @@ React = require('react'),
 
 var PieChart = React.createClass({
   mixins: [ChartMixin], // Use the mixin
+
+  d3Chart: d3Chart,
+
   propTypes: {
     data: React.PropTypes.array,
     stuff: React.PropTypes.array,
@@ -19,4 +22,3 @@ var PieChart = React.createClass({
 });
 
 module.exports = PieChart;
-
