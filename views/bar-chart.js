@@ -9,9 +9,7 @@ var BarChart = React.createClass({
   d3Chart: d3Chart,
 
   propTypes: {
-    data: React.PropTypes.array,
-    stuff: React.PropTypes.array,
-    domain: React.PropTypes.object
+    data: React.PropTypes.array
   },
 
   render: function() {
