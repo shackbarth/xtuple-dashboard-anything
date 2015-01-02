@@ -20,6 +20,20 @@ var App = React.createClass({
   },
 
   componentDidMount: function () {
+    // make sure that we're logged in
+    $.ajax({
+      url: '/' + org + '/browser-api/v1/resources/honorific?count=true',
+      dataType: "json",
+      success: function (data) {
+        // nothing to do
+      }.bind(this),
+      error: function (err) {
+        // we're probably not logged in to the server
+        window.location = '/' + org + '/logout';
+      }.bind(this)
+    });
+
+    // fetch the discovery document
     $.ajax({
       url: '/' + org + '/discovery/v1alpha1/apis/v1alpha1/rest',
       dataType: "json",
