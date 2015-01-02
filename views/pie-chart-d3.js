@@ -32,7 +32,7 @@ d3Chart.create = function (el, props, state) {
 
 d3Chart.update = function (el, state) {
   // http://bl.ocks.org/mbostock/3887235
-  var data = state.stuff;
+  var data = state.data;
 
   var g = svg.selectAll(".arc")
     .data(pie(data))

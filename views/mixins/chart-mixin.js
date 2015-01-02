@@ -17,9 +17,7 @@
 
     getChartState: function () {
       return {
-        data: this.props.data,
-        domain: this.props.domain,
-        stuff: this.props.stuff
+        data: this.props.data
       };
     },
 

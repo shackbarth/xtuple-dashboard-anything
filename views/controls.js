@@ -5,7 +5,6 @@ React = require('react'),
 var Controls = React.createClass({
   propTypes: {
     schema: React.PropTypes.object,
-    getData: React.PropTypes.func,
     fetchList: React.PropTypes.func,
     setChartType: React.PropTypes.func
   },
@@ -15,7 +14,6 @@ var Controls = React.createClass({
       schema: {
         resources: {}
       },
-      getData: null,
       fetchList: null,
       setChartType: null
     };

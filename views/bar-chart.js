@@ -11,8 +11,6 @@ var BarChart = React.createClass({
 
   propTypes: {
     data: React.PropTypes.array,
-    stuff: React.PropTypes.array,
-    domain: React.PropTypes.object
   },
 
   render: function() {
