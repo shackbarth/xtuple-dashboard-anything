@@ -20,6 +20,7 @@ var App = React.createClass({
   getInitialState: function () {
     var domain = { x: [0, 30], y: [0, 100]};
     return {
+      chartType: 'bar',
       data: this.getData(domain),
       domain: domain,
       stuff: this.getStuff([])
@@ -53,6 +54,22 @@ var App = React.createClass({
   },
 
   render: function () {
+    var chart;
+    if(this.state.chartType === "bar") {
+      chart = <BarChart
+        data={this.state.data}
+        stuff={this.state.stuff}
+        domain={this.state.domain}
+      />;
+    } else {
+      chart = <PieChart
+        data={this.state.data}
+        stuff={this.state.stuff}
+        domain={this.state.domain}
+      />;
+    }
+
+
     return (
       <div className="container">
         <div className="panel panel-info">
@@ -60,16 +77,13 @@ var App = React.createClass({
             <h3 className="panel-title">Chart</h3>
           </div>
           <div className="panel-body">
-            <BarChart
-              data={this.state.data}
-              stuff={this.state.stuff}
-              domain={this.state.domain}
-            />
+            {chart}
           </div>
           <div className="panel-footer">
             <Controls
               schema={this.state.schema}
               fetchList={this.fetchList}
+              setChartType={this.setChartType}
             />
           </div>
         </div>
@@ -125,7 +139,13 @@ var App = React.createClass({
     this.setState({
       stuff: totalledData
     });
+  },
+
+  setChartType: function (chartType) {
+    this.setState({chartType: chartType});
   }
+
+
 });
 
 React.render(<App />, document.getElementById('content'));

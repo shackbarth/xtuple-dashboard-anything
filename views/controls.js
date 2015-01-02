@@ -6,7 +6,8 @@ var Controls = React.createClass({
   propTypes: {
     schema: React.PropTypes.object,
     getData: React.PropTypes.func,
-    fetchList: React.PropTypes.func
+    fetchList: React.PropTypes.func,
+    setChartType: React.PropTypes.func
   },
 
   getDefaultProps: function () {
@@ -15,7 +16,8 @@ var Controls = React.createClass({
         resources: {}
       },
       getData: null,
-      fetchList: null
+      fetchList: null,
+      setChartType: null
     };
   },
 
@@ -112,6 +114,17 @@ var Controls = React.createClass({
             </select>
           </div>
         </div>
+        <div className="form-group">
+          <label for="chartType" className="col-md-2 control-label">Chart Type: </label>
+          <div className="col-md-2">
+            <select onChange={this.handleChartTypeChange} ref="chartType" id="chartType"
+                className="form-control">
+              <option value="bar">Bar</option>
+              <option value="pie">Pie</option>
+              {totals}
+            </select>
+          </div>
+        </div>
       </form>
     );
   },
@@ -127,6 +140,14 @@ var Controls = React.createClass({
       path: this.props.schema.resources[recordType].methods.get.path,
       fields: this.props.schema.schemas[recordType].properties
     });
+  },
+
+  handleChartTypeChange: function (event) {
+    var fieldName = event.target.value;
+    this.setState({
+      chartType: fieldName
+    });
+    this.props.setChartType(fieldName);
   },
 
   handleGroupbyChange: function (event) {
