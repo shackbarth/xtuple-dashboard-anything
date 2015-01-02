@@ -7,15 +7,15 @@
       this.d3Chart.create(el, {
         width: '100%',
         height: '300px'
-      }, this.getChartState());
+      }, this.getChartData());
     },
 
     componentDidUpdate: function () {
       var el = this.getDOMNode();
-      this.d3Chart.update(el, this.getChartState());
+      this.d3Chart.update(el, this.getChartData());
     },
 
-    getChartState: function () {
+    getChartData: function () {
       return {
         data: this.props.data
       };

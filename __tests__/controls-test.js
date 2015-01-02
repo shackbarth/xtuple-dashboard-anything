@@ -44,15 +44,15 @@ describe('Test Chart Controls', function () {
           }
         }
       },
-      fetchList: _.noop
+      fetchData: _.noop
     };
-    spyOn(props, "fetchList");
+    spyOn(props, "fetchData");
   });
 
   it('Ensure component can be rendered with correct properties', function () {
     // Render a control in the document
     var controls = TestUtils.renderIntoDocument(
-      <Controls schema={props.schema} getData={_.noop} fetchList={props.fetchList} />
+      <Controls schema={props.schema} getData={_.noop} fetchData={props.fetchData} />
     );
 
     // Verify controls are rendered
@@ -72,6 +72,6 @@ describe('Test Chart Controls', function () {
     var totalbyDropdown = controls.refs.totalBy.getDOMNode();
     TestUtils.Simulate.change(totalbyDropdown, {target: {value: "_count"}});
 
-    expect(props.fetchList).toHaveBeenCalledWith(expectedFetch);
+    expect(props.fetchData).toHaveBeenCalledWith(expectedFetch);
   });
 });

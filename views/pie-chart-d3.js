@@ -4,6 +4,8 @@ var d3Chart = {},
   pie, svg, arc, color;
 
 d3Chart.create = function (el, props, state) {
+  d3.select(".chart")
+    .style('min-height', props.height);
 
   var width = 960,
     height = 500,
@@ -26,7 +28,6 @@ d3Chart.create = function (el, props, state) {
     .append("g")
     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
-
   this.update(el, state);
 };
 
@@ -48,7 +49,6 @@ d3Chart.update = function (el, state) {
     .attr("dy", ".35em")
     .style("text-anchor", "middle")
     .text(function(d) { return d.data.key; });
-
 };
 
 d3Chart.destroy = function (el) {
