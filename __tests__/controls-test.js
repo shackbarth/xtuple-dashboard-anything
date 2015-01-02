@@ -6,8 +6,18 @@ var _ = require("lodash");
 jest.dontMock('../views/controls');
 jest.dontMock('lodash');
 
-describe('dashboard control', function() {
+describe('Test Chart Controls', function () {
   var props;
+  var React = require('react/addons');
+  var Controls = require('../views/controls.js');
+  var TestUtils = React.addons.TestUtils;
+  var expectedFetch = {
+    path: 'foo-get',
+    groupBy: 'propA',
+    filterByArray: [],
+    filterByValueArray: [],
+    totalBy: '_count'
+  };
 
   beforeEach(function () {
     props = {
@@ -37,42 +47,31 @@ describe('dashboard control', function() {
       fetchList: _.noop
     };
     spyOn(props, "fetchList");
-
   });
 
-  it('captures user input and fetches data appropriately', function() {
-    var React = require('react/addons');
-    var Controls = require('../views/controls.js');
-    var TestUtils = React.addons.TestUtils;
-    var expectedFetch = {
-      path: 'foo-get',
-      groupBy: 'propA',
-      filterByArray: [],
-      filterByValueArray: [],
-      totalBy: '_count'
-    };
-
+  it('Ensure component can be rendered with correct properties', function () {
     // Render a control in the document
     var controls = TestUtils.renderIntoDocument(
       <Controls schema={props.schema} getData={_.noop} fetchList={props.fetchList} />
     );
 
-    var label = TestUtils.findRenderedDOMComponentWithClass(controls, 'business-object-label');
-    expect(label.getDOMNode().textContent).toEqual('Business Object: ');
+    // Verify controls are rendered
+    expect(controls).toBeDefined();
+    // Verify props
+    expect(controls.props.schema).toBe(props.schema);
 
-    var businessObjectDropdown =
-      TestUtils.findRenderedDOMComponentWithClass(controls, 'business-object');
+    var label = controls.refs.businessObjectLabel.getDOMNode();
+    expect(label.textContent).toEqual('Business Object:');
+
+    var businessObjectDropdown = controls.refs.businessObject.getDOMNode();
     TestUtils.Simulate.change(businessObjectDropdown, {target: {value: "Foo"}});
 
-    var groupbyDropdown =
-      TestUtils.findRenderedDOMComponentWithClass(controls, 'group-by');
+    var groupbyDropdown = controls.refs.groupBy.getDOMNode();
     TestUtils.Simulate.change(groupbyDropdown, {target: {value: "propA"}});
 
-    var totalbyDropdown =
-      TestUtils.findRenderedDOMComponentWithClass(controls, 'total-by');
+    var totalbyDropdown = controls.refs.totalBy.getDOMNode();
     TestUtils.Simulate.change(totalbyDropdown, {target: {value: "_count"}});
 
     expect(props.fetchList).toHaveBeenCalledWith(expectedFetch);
-
   });
 });

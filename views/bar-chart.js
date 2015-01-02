@@ -1,9 +1,9 @@
 /**  @jsx React.DOM */
 React = require('react'),
   ChartMixin = require('./mixins/chart-mixin'),
-  d3Chart = require('./pie-chart-d3');
+  d3Chart = require('./bar-chart-d3');
 
-var PieChart = React.createClass({
+var BarChart = React.createClass({
   mixins: [ChartMixin], // Use the mixin
   propTypes: {
     data: React.PropTypes.array,
@@ -18,5 +18,5 @@ var PieChart = React.createClass({
   }
 });
 
-module.exports = PieChart;
+module.exports = BarChart;
 

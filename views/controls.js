@@ -9,11 +9,22 @@ var Controls = React.createClass({
     fetchList: React.PropTypes.func
   },
 
+  getDefaultProps: function () {
+    return {
+      schema: {
+        resources: {}
+      },
+      getData: null,
+      fetchList: null
+    };
+  },
+
   getInitialState: function () {
     return {
       groupBy : '',
       totalBy : '',
       path: '',
+      fields: {},
       filterFields: 1,
       filterByArray: [],
       filterByValueArray: []
@@ -32,17 +43,29 @@ var Controls = React.createClass({
       });
     }
 
+    var resources = _.map(this.props.schema.resources, function (value, key) {
+      return <option value={key} key={key}>{key}</option>;
+    });
+
+    var fields = _.map(this.state.fields, function (value, key) {
+      return <option value={key} key={key}>{value.title}</option>;
+    });
+
+    var totals = _.map(_.omit(fields, function (value) {
+      return value.type !== "number";
+    }), function (value, key) {
+      return <option value={key} key={key}>{value.title}</option>;
+    });
+
     return (
       <form className="form-horizontal" role="form">
         <div className="form-group">
-          <label for="businessObject" className="col-md-2 control-label business-object-label">Business Object: </label>
+          <label for="businessObject" ref="businessObjectLabel" className="col-md-2 control-label">Business Object:</label>
           <div className="col-md-3">
-            <select onChange={this.handleResourceChange} id="businessObject"
-                className="form-control business-object">
+            <select onChange={this.handleResourceChange} id="businessObject" ref="businessObject"
+                className="form-control">
               <option value=""></option>
-              {this.props.schema && _.map(this.props.schema.resources, function (value, key) {
-                return <option value={key}>{key}</option>;
-              })}
+              {resources}
             </select>
           </div>
         </div>
@@ -51,16 +74,14 @@ var Controls = React.createClass({
       return <div className="form-group">
         <label for="filterBy" className="col-md-2 control-label">Filter By Field: </label>
         <div className="col-md-2">
-          <select onChange={that.handleFilterbyChange} id={"filterBy" + i}
+          <select onChange={that.handleFilterbyChange} id={"filterBy" + i} ref={"filterBy" + i}
               className="form-control">
             <option value=""></option>
-          {_.map(that.state && that.state.fields, function (value, key) {
-              return <option value={key}>{value.title}</option>;
-            })}
+            {fields}
           </select>
         </div>
         <div className="col-md-2">
-          <input type="text" className="form-control" id={"filterByValue" + i}
+          <input type="text" className="form-control" id={"filterByValue" + i} ref={"filterByValue" + i}
             onChange={that.handleFilterbyValueChange} />
         </div>
         <button type="button" className="btn btn-info"
@@ -71,29 +92,23 @@ var Controls = React.createClass({
       </div>
     })}
         <div className="form-group">
-          <label for="groupBy" className="col-md-2 control-label">Group By Field: </label>
+          <label for="groupBy" className="col-md-2 control-label">Group By Field:</label>
           <div className="col-md-2">
-            <select onChange={this.handleGroupbyChange} id="groupBy"
-                className="form-control group-by">
+            <select onChange={this.handleGroupbyChange} ref="groupBy" id="groupBy"
+                className="form-control">
               <option value=""></option>
-              {_.map(this.state && this.state.fields, function (value, key) {
-                return <option value={key}>{value.title}</option>;
-              })}
+              {fields}
             </select>
           </div>
         </div>
         <div className="form-group">
           <label for="totalBy" className="col-md-2 control-label">Total By Field: </label>
           <div className="col-md-2">
-            <select onChange={this.handleTotalbyChange} id="totalBy"
-                className="form-control total-by">
+            <select onChange={this.handleTotalbyChange} ref="totalBy" id="totalBy"
+                className="form-control">
               <option value=""></option>
               <option value="_count">Count</option>
-              {_.map(this.state && _.omit(this.state.fields, function (value) {
-                return value.type !== "number";
-              }), function (value, key) {
-                return <option value={key}>{value.title}</option>;
-              })}
+              {totals}
             </select>
           </div>
         </div>

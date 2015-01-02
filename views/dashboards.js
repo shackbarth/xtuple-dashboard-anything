@@ -5,7 +5,8 @@ var React = require('react'),
   $ = require('jquery'),
   _ = require('lodash'),
   Controls = require('./controls'),
-  Chart = require('./chart'),
+  PieChart = require('./pie-chart'),
+  BarChart = require('./bar-chart'),
   url = require('url'),
   org = url.parse(window.location.href).pathname.split('/')[1];
 
@@ -59,7 +60,7 @@ var App = React.createClass({
             <h3 className="panel-title">Chart</h3>
           </div>
           <div className="panel-body">
-            <Chart
+            <BarChart
               data={this.state.data}
               stuff={this.state.stuff}
               domain={this.state.domain}
@@ -127,4 +128,4 @@ var App = React.createClass({
   }
 });
 
-React.render(App(), document.getElementById('content'));
+React.render(<App />, document.getElementById('content'));
