@@ -26,7 +26,6 @@ d3Chart.create = function (el, props, state) {
     .append("g")
     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
-
   this.update(el, state);
 };
 
@@ -48,7 +47,6 @@ d3Chart.update = function (el, state) {
     .attr("dy", ".35em")
     .style("text-anchor", "middle")
     .text(function(d) { return d.data.key; });
-
 };
 
 d3Chart.destroy = function (el) {

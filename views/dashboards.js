@@ -15,11 +15,13 @@ var App = React.createClass({
     var domain = { x: [0, 30], y: [0, 100]};
     return {
       chartType: 'bar',
-      data: []
+      data: [],
+      schema: {}
     };
   },
 
-  componentDidMount: function () {
+  componentWillMount: function () {
+    // TODO: Need a loading image here
     $.ajax({
       url: '/' + org + '/discovery/v1alpha1/apis/v1alpha1/rest',
       dataType: "json",
@@ -53,7 +55,7 @@ var App = React.createClass({
           <div className="panel-footer">
             <Controls
               schema={this.state.schema}
-              fetchList={this.fetchList}
+              fetchData={this.fetchData}
               setChartType={this.setChartType}
             />
           </div>
@@ -62,7 +64,11 @@ var App = React.createClass({
     );
   },
 
-  fetchList: function (options) {
+  fetchData: function (options) {
+    if (!options.groupBy || !options.totalBy) {
+      return;
+    }
+
     var that = this,
       path = options.path.substring(0, options.path.lastIndexOf("/")),
       url = "/" + org + "/browser-api/v1/" + path,
@@ -74,6 +80,7 @@ var App = React.createClass({
       }
     });
 
+    // TODO: Need a loading image here
     $.ajax({
       url: url,
       data: _.extend({}, filter, {count: true}),

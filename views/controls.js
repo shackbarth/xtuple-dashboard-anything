@@ -5,7 +5,7 @@ React = require('react'),
 var Controls = React.createClass({
   propTypes: {
     schema: React.PropTypes.object,
-    fetchList: React.PropTypes.func,
+    fetchData: React.PropTypes.func,
     setChartType: React.PropTypes.func
   },
 
@@ -14,7 +14,7 @@ var Controls = React.createClass({
       schema: {
         resources: {}
       },
-      fetchList: null,
+      fetchData: null,
       setChartType: null
     };
   },
@@ -33,16 +33,6 @@ var Controls = React.createClass({
 
   render: function () {
     var that = this;
-    if (this.state.groupBy && this.state.totalBy) {
-      this.props.fetchList({
-        path: this.state.path,
-        groupBy: this.state.groupBy,
-        filterByArray: this.state.filterByArray,
-        filterByValueArray: this.state.filterByValueArray,
-        totalBy: this.state.totalBy
-      });
-    }
-
     var resources = _.map(this.props.schema.resources, function (value, key) {
       return <option value={key} key={key}>{key}</option>;
     });
@@ -138,6 +128,14 @@ var Controls = React.createClass({
       path: this.props.schema.resources[recordType].methods.get.path,
       fields: this.props.schema.schemas[recordType].properties
     });
+
+    this.props.fetchData({
+      path: this.state.path,
+      groupBy: this.state.groupBy,
+      filterByArray: this.state.filterByArray,
+      filterByValueArray: this.state.filterByValueArray,
+      totalBy: this.state.totalBy
+    });
   },
 
   handleChartTypeChange: function (event) {
@@ -153,6 +151,14 @@ var Controls = React.createClass({
     this.setState({
       groupBy: fieldName
     });
+
+    this.props.fetchData({
+      path: this.state.path,
+      groupBy: fieldName,
+      filterByArray: this.state.filterByArray,
+      filterByValueArray: this.state.filterByValueArray,
+      totalBy: this.state.totalBy
+    });
   },
 
   handleFilterbyChange: function (event) {
@@ -162,6 +168,14 @@ var Controls = React.createClass({
     filterByArray[index] = fieldName;
     this.setState({
       filterByArray: filterByArray
+    });
+
+    this.props.fetchData({
+      path: this.state.path,
+      groupBy: this.state.groupBy,
+      filterByArray: filterByArray,
+      filterByValueArray: this.state.filterByValueArray,
+      totalBy: this.state.totalBy
     });
   },
 
@@ -173,6 +187,14 @@ var Controls = React.createClass({
     this.setState({
       filterByValueArray: filterByValueArray
     });
+
+    this.props.fetchData({
+      path: this.state.path,
+      groupBy: this.state.groupBy,
+      filterByArray: this.state.filterByArray,
+      filterByValueArray: filterByValueArray,
+      totalBy: this.state.totalBy
+    });
   },
 
   handleTotalbyChange: function (event) {
@@ -180,20 +202,16 @@ var Controls = React.createClass({
     this.setState({
       totalBy: fieldName
     });
-  },
 
-  shouldComponentUpdate: function (nextProps, nextState) {
-    var that = this;
-    var relevantFields = ["groupBy", "totalBy", "recordType", "filterFields",
-      "filterByArray", "filterByValueArray"];
-    var fieldUpdate = false;
-    _.each(relevantFields, function (field) {
-      if (!_.isEqual(that.state[field], nextState[field])) {
-        fieldUpdate = true;
-      }
+    this.props.fetchData({
+      path: this.state.path,
+      groupBy: this.state.groupBy,
+      filterByArray: this.state.filterByArray,
+      filterByValueArray: this.state.filterByValueArray,
+      totalBy: fieldName
     });
-    return !this.props.schema.basePath || fieldUpdate;
   }
+
 });
 
 module.exports = Controls;

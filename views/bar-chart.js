@@ -4,13 +4,14 @@ React = require('react'),
   d3Chart = require('./bar-chart-d3');
 
 var BarChart = React.createClass({
+  mixins: [ChartMixin],
 
   d3Chart: d3Chart,
 
-  mixins: [ChartMixin], // Use the mixin
-
   propTypes: {
     data: React.PropTypes.array,
+    stuff: React.PropTypes.array,
+    domain: React.PropTypes.object
   },
 
   render: function() {
@@ -21,3 +22,4 @@ var BarChart = React.createClass({
 });
 
 module.exports = BarChart;
+
