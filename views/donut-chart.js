@@ -1,16 +1,15 @@
 /**  @jsx React.DOM */
 React = require('react'),
-  ChartMixin = require('./mixins/chart-mixin'),
-  d3Chart = require('./donut-chart-d3');
+  ChartMixin = require('./mixins/chart-mixin');
 
 var DonutChart = React.createClass({
-  mixins: [ChartMixin], // Use the mixin
-
-  d3Chart: d3Chart,
+  mixins: [ChartMixin],
 
   propTypes: {
     data: React.PropTypes.array,
   },
+
+  chartType: "donut",
 
   render: function() {
     return (
