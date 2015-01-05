@@ -123,7 +123,7 @@ var App = React.createClass({
 
   groupChart: function (data, options) {
     var groupedData;
-    if (data.length > 0 && _.isObject(data[0][options.groupBy])) {
+    if (data && data.length > 0 && _.isObject(data[0][options.groupBy])) {
       // prevent "[object Object]" displaying onscreen
       groupedData = _.groupBy(data, function (datum) {
         return datum[options.groupBy].name ||
