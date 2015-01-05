@@ -1,7 +1,6 @@
 /**  @jsx React.DOM */
 React = require('react'),
-  ChartMixin = require('./mixins/chart-mixin'),
-  d3Chart = require('./bar-chart-d3');
+  ChartMixin = require('./mixins/chart-mixin');
 
 var BarChart = React.createClass({
   mixins: [ChartMixin],
