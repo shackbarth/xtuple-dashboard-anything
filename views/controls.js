@@ -135,14 +135,6 @@ var Controls = React.createClass({
       filterByArray: [],
       filterByValueArray: []
     });
-
-    this.props.fetchData({
-      path: this.state.path,
-      groupBy: this.state.groupBy,
-      filterByArray: this.state.filterByArray,
-      filterByValueArray: this.state.filterByValueArray,
-      totalBy: this.state.totalBy
-    });
   },
 
   handleChartTypeChange: function (event) {
