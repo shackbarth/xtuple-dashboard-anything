@@ -122,7 +122,18 @@ var App = React.createClass({
   },
 
   groupChart: function (data, options) {
-    var groupedData = _.groupBy(data, options.groupBy);
+    var groupedData;
+    if (data.length > 0 && _.isObject(data[0][options.groupBy])) {
+      // prevent "[object Object]" displaying onscreen
+      groupedData = _.groupBy(data, function (datum) {
+        return datum[options.groupBy].name ||
+          datum[options.groupBy].code ||
+          datum[options.groupBy].number ||
+          datum[options.groupBy].description;
+      });
+    } else {
+      groupedData = _.groupBy(data, options.groupBy);
+    }
     var totalledData = _.map(groupedData, function (dataArray, key) {
       return {
         key: key,
