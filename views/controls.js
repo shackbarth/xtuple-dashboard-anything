@@ -41,7 +41,7 @@ var Controls = React.createClass({
       return <option value={key} key={key}>{value.title}</option>;
     });
 
-    var totals = _.map(_.omit(fields, function (value) {
+    var totals = _.map(_.omit(this.state.fields, function (value) {
       return value.type !== "number";
     }), function (value, key) {
       return <option value={key} key={key}>{value.title}</option>;
