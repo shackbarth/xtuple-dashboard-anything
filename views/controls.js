@@ -127,7 +127,13 @@ var Controls = React.createClass({
     this.setState({
       recordType: recordType,
       path: this.props.schema.resources[recordType].methods.get.path,
-      fields: this.props.schema.schemas[recordType].properties
+      fields: this.props.schema.schemas[recordType].properties,
+      // reset everything else
+      groupBy : '',
+      totalBy : '',
+      filterFields: 1,
+      filterByArray: [],
+      filterByValueArray: []
     });
 
     this.props.fetchData({
