@@ -122,6 +122,16 @@ var Controls = React.createClass({
     this.setState({filterFields: this.state.filterFields + 1});
   },
 
+  fetchData: function (override) {
+    this.props.fetchData(_.extend({
+      path: this.state.path,
+      groupBy: this.state.groupBy,
+      filterByArray: this.state.filterByArray,
+      filterByValueArray: this.state.filterByValueArray,
+      totalBy: this.state.totalBy
+    }, override));
+  },
+
   handleResourceChange: function (event) {
     var recordType = event.target.value;
     this.setState({
@@ -129,6 +139,7 @@ var Controls = React.createClass({
       path: this.props.schema.resources[recordType].methods.get.path,
       fields: this.props.schema.schemas[recordType].properties,
       // reset everything else
+      // TODO: this isn't necessarily clearing all the fields off the DOM
       groupBy : '',
       totalBy : '',
       filterFields: 1,
@@ -151,13 +162,7 @@ var Controls = React.createClass({
       groupBy: fieldName
     });
 
-    this.props.fetchData({
-      path: this.state.path,
-      groupBy: fieldName,
-      filterByArray: this.state.filterByArray,
-      filterByValueArray: this.state.filterByValueArray,
-      totalBy: this.state.totalBy
-    });
+    this.fetchData({groupBy: fieldName});
   },
 
   handleFilterbyChange: function (event) {
@@ -169,13 +174,7 @@ var Controls = React.createClass({
       filterByArray: filterByArray
     });
 
-    this.props.fetchData({
-      path: this.state.path,
-      groupBy: this.state.groupBy,
-      filterByArray: filterByArray,
-      filterByValueArray: this.state.filterByValueArray,
-      totalBy: this.state.totalBy
-    });
+    this.fetchData({filterByArray: filterByArray});
   },
 
   handleFilterbyValueChange: function (event) {
@@ -187,13 +186,7 @@ var Controls = React.createClass({
       filterByValueArray: filterByValueArray
     });
 
-    this.props.fetchData({
-      path: this.state.path,
-      groupBy: this.state.groupBy,
-      filterByArray: this.state.filterByArray,
-      filterByValueArray: filterByValueArray,
-      totalBy: this.state.totalBy
-    });
+    this.fetchData({filterByValueArray: filterByValueArray});
   },
 
   handleTotalbyChange: function (event) {
@@ -202,13 +195,7 @@ var Controls = React.createClass({
       totalBy: fieldName
     });
 
-    this.props.fetchData({
-      path: this.state.path,
-      groupBy: this.state.groupBy,
-      filterByArray: this.state.filterByArray,
-      filterByValueArray: this.state.filterByValueArray,
-      totalBy: fieldName
-    });
+    this.fetchData({totalBy: fieldName});
   }
 
 });
