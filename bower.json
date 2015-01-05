@@ -3,6 +3,10 @@
   "version": "0.0.1",
   "dependencies": {
     "bootstrap": "3.2.0",
-    "bootswatch-dist": "3.3.0-flatly"
+    "bootswatch-dist": "3.3.0-flatly",
+    "c3": "~0.4.8"
+  },
+  "resolutions": {
+    "d3": "~3.4.4"
   }
 }
