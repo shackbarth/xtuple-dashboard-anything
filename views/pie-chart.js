@@ -1,12 +1,11 @@
 /**  @jsx React.DOM */
 React = require('react'),
-  ChartMixin = require('./mixins/chart-mixin'),
-  d3Chart = require('./pie-chart-d3');
+  ChartMixin = require('./mixins/chart-mixin');
 
 var PieChart = React.createClass({
   mixins: [ChartMixin], // Use the mixin
 
-  d3Chart: d3Chart,
+  chartType: "pie",
 
   propTypes: {
     data: React.PropTypes.array,
@@ -14,7 +13,7 @@ var PieChart = React.createClass({
 
   render: function() {
     return (
-      <div className="chart"></div>
+      <div id="chart" className="chart"></div>
     );
   }
 });
