@@ -5,7 +5,7 @@ var React = require('react'),
   $ = require('jquery'),
   _ = require('lodash'),
   Controls = require('./controls'),
-  //PieChart = require('./pie-chart'),
+  PieChart = require('./pie-chart'),
   DonutChart = require('./donut-chart'),
   BarChart = require('./bar-chart'),
   url = require('url'),
@@ -56,10 +56,10 @@ var App = React.createClass({
       chart = <DonutChart
         data={this.state.data}
       />;
-    //} else {
-    //  chart = <PieChart
-    //    data={this.state.data}
-    //  />;
+    } else {
+      chart = <PieChart
+        data={this.state.data}
+      />;
     }
 
     return (
