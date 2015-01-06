@@ -1,11 +1,15 @@
 {
-  node:true,
-  indent:2,
-  curly:false,
-  eqeqeq:true,
-  immed:true,
-  undef:true,
-  strict:true,
-  trailing:true,
-  white:true
+  "globals": {
+    "c3": false
+  },
+  "node":true,
+  "indent":2,
+  "curly":false,
+  "eqeqeq":true,
+  "immed":true,
+  "undef":true,
+  "unused": true,
+  "strict":true,
+  "trailing":true,
+  "white":true
 }
