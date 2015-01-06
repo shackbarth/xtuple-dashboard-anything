@@ -1,14 +1,16 @@
 {
   "globals": {
-    "c3": false
+    "c3": false,
+    "window": false
   },
   "node":true,
   "indent":2,
-  "curly":false,
+  "curly":true,
   "eqeqeq":true,
   "immed":true,
+  "latedef":true,
   "undef":true,
-  "unused": true,
+  "unused": "vars",
   "strict":true,
   "trailing":true,
   "white":true

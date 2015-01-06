@@ -38,7 +38,9 @@
     "jsxhint": "^0.9.0",
     "lodash": "^2.4.1",
     "react": "^0.12.1",
-    "react-tools": "^0.12.1"
+    "react-loader": "^1.0.1",
+    "react-tools": "^0.12.1",
+    "spin": "0.0.1"
   },
   "devDependencies": {
     "grunt-cli": "^0.1.13",

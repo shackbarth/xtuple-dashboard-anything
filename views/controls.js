@@ -1,5 +1,7 @@
 /**  @jsx React.DOM */
-React = require('react'),
+"use strict";
+
+var React = require('react'),
   _ = require('lodash');
 
 var Controls = React.createClass({
@@ -61,7 +63,7 @@ var Controls = React.createClass({
         </div>
     {_.times(this.state.filterFields, function (i) {
 
-      return <div className="form-group">
+      return (<div className="form-group">
         <label for="filterBy" className="col-md-2 control-label">Filter By Field: </label>
         <div className="col-md-2">
           <select onChange={that.handleFilterbyChange} id={"filterBy" + i} ref={"filterBy" + i}
@@ -79,7 +81,7 @@ var Controls = React.createClass({
             onClick={that.addFilterField}>
           <span className="glyphicon glyphicon-plus"></span>
         </button>
-      </div>
+      </div>);
     })}
         <div className="form-group">
           <label for="groupBy" className="col-md-2 control-label">Group By Field:</label>

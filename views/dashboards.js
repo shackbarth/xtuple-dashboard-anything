@@ -4,6 +4,7 @@
 var React = require('react'),
   $ = require('jquery'),
   _ = require('lodash'),
+  Loader = require('react-loader'),
   Controls = require('./controls'),
   PieChart = require('./pie-chart'),
   DonutChart = require('./donut-chart'),
@@ -13,10 +14,10 @@ var React = require('react'),
 
 var App = React.createClass({
   getInitialState: function () {
-    var domain = { x: [0, 30], y: [0, 100]};
     return {
       chartType: 'bar',
       data: [],
+      loaded: false,
       schema: {}
     };
   },
@@ -41,7 +42,7 @@ var App = React.createClass({
       url: '/' + org + '/discovery/v1alpha1/apis/v1alpha1/rest',
       dataType: "json",
       success: function (data) {
-        this.setState({schema: data});
+        this.setState({schema: data, loaded: true});
       }.bind(this)
     });
   },
@@ -72,11 +73,13 @@ var App = React.createClass({
             {chart}
           </div>
           <div className="panel-footer">
-            <Controls
-              schema={this.state.schema}
-              fetchData={this.fetchData}
-              setChartType={this.setChartType}
-            />
+            <Loader loaded={this.state.loaded}>
+              <Controls
+                schema={this.state.schema}
+                fetchData={this.fetchData}
+                setChartType={this.setChartType}
+              />
+            </Loader>
           </div>
         </div>
       </div>
@@ -156,4 +159,4 @@ var App = React.createClass({
 
 });
 
-React.render(<App />, document.getElementById('content'));
+React.render(<App />, window.document.getElementById('content'));
