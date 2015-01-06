@@ -20,7 +20,7 @@ var ChartMixin = {
 
   update: function (el, state) {
     var data = _.map(state.data, function (datum) {
-      return [datum.key, datum.total]
+      return [datum.key, datum.total];
     });
     this._chart.load({
       columns: data,
@@ -48,12 +48,11 @@ var ChartMixin = {
   },
 
   componentWillUnmount: function () {
-    var el = this.getDOMNode();
     // TODO:
+    //var el = this.getDOMNode();
     //this.destroy(el);
   }
 
-
-}
+};
 
 module.exports = ChartMixin;
