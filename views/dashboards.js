@@ -37,7 +37,6 @@ var App = React.createClass({
     });
 
     // fetch the discovery document
-    // TODO: Need a loading image here
     $.ajax({
       url: '/' + org + '/discovery/v1alpha1/apis/v1alpha1/rest',
       dataType: "json",

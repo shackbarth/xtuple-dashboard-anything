@@ -141,13 +141,16 @@ var Controls = React.createClass({
       path: this.props.schema.resources[recordType].methods.get.path,
       fields: this.props.schema.schemas[recordType].properties,
       // reset everything else
-      // TODO: this isn't necessarily clearing all the fields off the DOM
       groupBy : '',
       totalBy : '',
       filterFields: 1,
       filterByArray: [],
       filterByValueArray: []
     });
+    this.refs.filterBy0.getDOMNode().value = "";
+    this.refs.filterByValue0.getDOMNode().value = "";
+    this.refs.groupBy.getDOMNode().value = "";
+    this.refs.totalBy.getDOMNode().value = "";
   },
 
   handleChartTypeChange: function (event) {

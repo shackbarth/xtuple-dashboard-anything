@@ -1,4 +1,4 @@
-# xTuple Dashboard Anywhere Extension
+# xTuple Dashboard Anything
 
 ## Production Install
 
@@ -22,7 +22,6 @@ $ npm install
 $ grunt watch
 $ cd ../xtuple
 $ npm link ../xtuple-dashboard-anything
-$ npm link xtuple-dashboard-anything
 $ ./scripts/build_app.js -n -e node_modules/xtuple-dashboard-anything
 ```
 
