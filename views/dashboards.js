@@ -66,7 +66,7 @@ var App = React.createClass({
       <div className="container">
         <div className="panel panel-info">
           <div className="panel-heading">
-            <h3 className="panel-title">Chart</h3>
+            <h3 className="panel-title">xTuple Dashboard Anything</h3>
           </div>
           <div className="panel-body">
             {chart}
