@@ -14,18 +14,9 @@ var BarChart = React.createClass({
     //    ratio: 0.5 // this makes bar width 50% of length between ticks
     //  }
     //}
-  },
-
-  propTypes: {
-    data: React.PropTypes.array,
-    position: React.PropTypes.string
-  },
-
-  render: function() {
-    return (
-      <div id={"chart" + this.props.position} className="chart"></div>
-    );
   }
+
+
 });
 
 module.exports = BarChart;

@@ -1,10 +1,24 @@
 'use strict';
 
 var _ = require("lodash");
+var React = require('react');
 
 var ChartMixin = {
 
+  propTypes: {
+    data: React.PropTypes.array,
+    query: React.PropTypes.object,
+    position: React.PropTypes.string
+  },
+
+  render: function() {
+    return (
+      <div id={"chart" + this.props.position} className="chart"></div>
+    );
+  },
+
   create: function (el, props, state) {
+    console.log(this.props.query);
     this._chart = c3.generate(_.extend(
       {
         bindto: '#chart' + this.props.position,
@@ -14,6 +28,14 @@ var ChartMixin = {
         data: {
           columns: [],
           type : this.chartType
+        },
+        axis: {
+          y: {
+            label: { // ADD
+              text: this.props.query.totalBy === "_count" ? "Count" : this.props.query.totalBy,
+              position: 'outer-middle'
+            }
+          }
         }
       },
       this.generateOptions

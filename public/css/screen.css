@@ -1,7 +1,16 @@
 body {
-  padding-top: 40px;
-  padding-bottom: 40px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   background-color: #fff;
+}
+
+.panel {
+  border: none;
+}
+
+.panel-heading {
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
 .chart div {

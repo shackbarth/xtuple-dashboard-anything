@@ -71,6 +71,10 @@ var ChartElement = React.createClass({
     console.log("position is", this.props.position);
     var mockResult = '{"chartType":"donut","filterByArray":["status"],"filterByValueArray":["R"],"recordType":"Incident","groupBy":"category","totalBy":"_count"}';
 
+    if(this.props.position === "2") {
+      mockResult = '{"chartType":"bar","filterByArray":[],"filterByValueArray":[],"recordType":"Incident","groupBy":"status","totalBy":"_count"}';
+    }
+
     var result = JSON.parse(mockResult);
     result.filterByArray = result.filterByArray || [];
     result.filterByValueArray = result.filterByValueArray || [];
@@ -83,17 +87,23 @@ var ChartElement = React.createClass({
     var chart;
     if(this.state.chartType === "bar") {
       chart = <BarChart
+        key={String(Math.random())} // XXX force re-render
         data={this.state.data}
+        query={this.state.query}
         position={this.props.position}
       />;
     } else if(this.state.chartType === "donut") {
       chart = <DonutChart
+        key={String(Math.random())} // XXX force re-render
         data={this.state.data}
+        query={this.state.query}
         position={this.props.position}
       />;
     } else {
       chart = <PieChart
+        key={String(Math.random())} // XXX force re-render
         data={this.state.data}
+        query={this.state.query}
         position={this.props.position}
       />;
     }
@@ -102,10 +112,29 @@ var ChartElement = React.createClass({
 
     return (
       <div className="panel panel-info">
+        <div className="panel-heading">
+          { this.state.showControls ?
+
+          <button type="button" className="btn btn-info btn-sm pull-right"
+            onClick={this.hideControls}>
+            <span className="glyphicon glyphicon-minus glyphicon-resize-small"></span>
+          </button>
+
+          :
+          <button type="button" className="btn btn-info btn-sm pull-right"
+            onClick={this.showControls}>
+            <span className="glyphicon glyphicon-wrench glyphicon-resize-small"></span>
+          </button>
+
+          }
+
+
+          {this.state.query.recordType} by {this.state.query.groupBy}
+        </div>
         <div className="panel-body">
           {chart}
         </div>
-      { this.state.showControls ?
+      { this.state.showControls &&
 
         <div className="panel-footer">
           <Loader loaded={this.state.loaded}>
@@ -117,18 +146,8 @@ var ChartElement = React.createClass({
               setQuery={this.setQuery}
             />
           </Loader>
-          <button type="button" className="btn btn-info btn-sm pull-right"
-            onClick={this.hideControls}>
-            <span className="glyphicon glyphicon-minus glyphicon-resize-small"></span>
-          </button>
         </div>
 
-        :
-
-        <button type="button" className="btn btn-info btn-sm pull-right"
-          onClick={this.showControls}>
-          <span className="glyphicon glyphicon-wrench glyphicon-resize-small"></span>
-        </button>
         }
       </div>
     );
