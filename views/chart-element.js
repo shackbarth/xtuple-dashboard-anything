@@ -12,7 +12,7 @@ var React = require('react'),
   url = require('url'),
   org = url.parse(window.location.href).pathname.split('/')[1];
 
-var App = React.createClass({
+var ChartElement = React.createClass({
   getInitialState: function () {
     return {
       chartType: 'bar',
@@ -137,7 +137,6 @@ var App = React.createClass({
     var query = this.state.query;
 
     if (!query.groupBy || !query.totalBy || !query.recordType || !this.state.schema.resources) {
-      //this.setState({data: []});
       return;
     }
     if (_.isEqual(query, this.state.previousQuery)) {
@@ -217,4 +216,4 @@ var App = React.createClass({
 
 });
 
-React.render(<App />, window.document.getElementById('content'));
+React.render(<ChartElement />, window.document.getElementById('content'));
