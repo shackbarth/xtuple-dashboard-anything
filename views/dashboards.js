@@ -19,7 +19,11 @@ var App = React.createClass({
       data: [],
       loaded: false,
       showControls: true, // TODO: make false
-      schema: {}
+      schema: {},
+      query: {
+        filterByArray: [],
+        filterByValuesArray: []
+      }
     };
   },
 
@@ -48,6 +52,7 @@ var App = React.createClass({
   },
 
   render: function () {
+    console.log("render");
     var chart;
     if(this.state.chartType === "bar") {
       chart = <BarChart
@@ -63,6 +68,8 @@ var App = React.createClass({
       />;
     }
 
+    this.fetchData();
+
     return (
       <div className="container">
         <div className="panel panel-info">
@@ -77,9 +84,10 @@ var App = React.createClass({
           <div className="panel-footer">
             <Loader loaded={this.state.loaded}>
               <Controls
+                query={this.state.query}
                 schema={this.state.schema}
-                fetchData={this.fetchData}
                 setChartType={this.setChartType}
+                setQuery={this.setQuery}
               />
             </Loader>
           </div>
@@ -96,19 +104,33 @@ var App = React.createClass({
     );
   },
 
-  fetchData: function (options) {
-    if (!options.groupBy || !options.totalBy) {
+  setQuery: function (query) {
+    this.setState({query: _.extend({}, this.state.query, query)});
+  },
+
+  fetchData: function () {
+    var query = this.state.query;
+
+    if (!query.groupBy || !query.totalBy) {
       return;
     }
+    if (_.isEqual(query, this.state.previousQuery)) {
+      return;
+    }
+    this.state.previousQuery = _.clone(query);
+    var path = this.state.query.recordType &&
+      this.state.schema.resources[this.state.query.recordType].methods.get.path;
 
+    path = path && path.substring(0, path.lastIndexOf("/"));
+
+    console.log("fetching data", path);
     var that = this,
-      path = options.path.substring(0, options.path.lastIndexOf("/")),
       url = "/" + org + "/browser-api/v1/" + path,
       filter = {};
 
-    _.times(options.filterByArray.length, function (i) {
-      if (options.filterByArray[i] && options.filterByValueArray[i]) {
-        filter["query[" + options.filterByArray[i] + "][EQUALS]"] = options.filterByValueArray[i];
+    _.times(query.filterByArray.length, function (i) {
+      if (query.filterByArray[i] && query.filterByValueArray[i]) {
+        filter["query[" + query.filterByArray[i] + "][EQUALS]"] = query.filterByValueArray[i];
       }
     });
 
@@ -127,7 +149,8 @@ var App = React.createClass({
           data: filter,
           dataType: "json",
           success: function (data) {
-            that.groupChart(data.data.data, options);
+            console.log("data success");
+            that.groupChart(data.data.data, query);
           }.bind(this)
         });
       }.bind(this)
