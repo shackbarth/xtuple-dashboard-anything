@@ -18,6 +18,7 @@ var App = React.createClass({
       chartType: 'bar',
       data: [],
       loaded: false,
+      showControls: true, // TODO: make false
       schema: {}
     };
   },
@@ -71,6 +72,8 @@ var App = React.createClass({
           <div className="panel-body">
             {chart}
           </div>
+        { this.state.showControls ?
+
           <div className="panel-footer">
             <Loader loaded={this.state.loaded}>
               <Controls
@@ -80,6 +83,14 @@ var App = React.createClass({
               />
             </Loader>
           </div>
+
+          :
+
+          <button type="button" className="btn btn-info pull-right"
+            onClick={this.showControls}>
+            <span className="glyphicon glyphicon-wrench"></span>
+          </button>
+          }
         </div>
       </div>
     );
@@ -153,6 +164,10 @@ var App = React.createClass({
 
   setChartType: function (chartType) {
     this.setState({chartType: chartType});
+  },
+
+  showControls: function () {
+    this.setState({showControls: true});
   }
 
 
