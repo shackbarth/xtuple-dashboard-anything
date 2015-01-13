@@ -18,7 +18,7 @@ var App = React.createClass({
       chartType: 'bar',
       data: [],
       loaded: false,
-      showControls: true, // TODO: make false
+      showControls: false,
       schema: {},
       query: {
         filterByArray: [],
@@ -28,6 +28,8 @@ var App = React.createClass({
   },
 
   componentDidMount: function () {
+    var that = this;
+
     // make sure that we're logged in
     $.ajax({
       url: '/' + org + '/browser-api/v1/resources/honorific?count=true',
@@ -49,6 +51,26 @@ var App = React.createClass({
         this.setState({schema: data, loaded: true});
       }.bind(this)
     });
+
+    this.fetchSavedQuery(function (err, result) {
+      if (err) {
+        console.log("Error fetching saved query", err);
+        return;
+      }
+      that.setState({query: result.query, chartType: result.chartType});
+    });
+  },
+
+  // mockup until we get the route working
+  fetchSavedQuery: function (callback) {
+    var mockResult = '{"chartType":"donut","filterByArray":["status"],"filterByValueArray":["R"],"recordType":"Incident","groupBy":"category","totalBy":"_count"}';
+
+    var result = JSON.parse(mockResult);
+    result.filterByArray = result.filterByArray || [];
+    result.filterByValueArray = result.filterByValueArray || [];
+    var chartType = result.chartType;
+    delete result.chartType;
+    callback(null, {query: result, chartType: chartType});
   },
 
   render: function () {
@@ -83,6 +105,7 @@ var App = React.createClass({
           <div className="panel-footer">
             <Loader loaded={this.state.loaded}>
               <Controls
+                chartType={this.state.chartType}
                 query={this.state.query}
                 schema={this.state.schema}
                 setChartType={this.setChartType}
@@ -113,7 +136,7 @@ var App = React.createClass({
   fetchData: function () {
     var query = this.state.query;
 
-    if (!query.groupBy || !query.totalBy || !query.recordType) {
+    if (!query.groupBy || !query.totalBy || !query.recordType || !this.state.schema.resources) {
       //this.setState({data: []});
       return;
     }

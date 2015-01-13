@@ -6,6 +6,7 @@ var React = require('react'),
 
 var Controls = React.createClass({
   propTypes: {
+    chartType: React.PropTypes.string,
     query: React.PropTypes.object,
     schema: React.PropTypes.object,
     setChartType: React.PropTypes.func,
@@ -50,7 +51,10 @@ var Controls = React.createClass({
         <div className="form-group">
           <label for="businessObject" ref="businessObjectLabel" className="col-md-2 control-label">Business Object:</label>
           <div className="col-md-3">
-            <select onChange={this.handleResourceChange} id="businessObject" ref="businessObject"
+            <select onChange={this.handleResourceChange}
+                id="businessObject"
+                ref="businessObject"
+                value={that.props.query.recordType}
                 className="form-control">
               <option value=""></option>
               {resources}
@@ -58,18 +62,20 @@ var Controls = React.createClass({
           </div>
         </div>
     {_.times(this.state.filterFields, function (i) {
-
-      return (<div className="form-group">
+      return (<div className="form-group" key={"formGroup" + i}>
         <label for="filterBy" className="col-md-2 control-label">Filter By Field: </label>
         <div className="col-md-2">
           <select onChange={that.handleFilterbyChange} id={"filterBy" + i} ref={"filterBy" + i}
-              className="form-control">
+              key={"filterBy" + i} className="form-control"
+              value={that.props.query.filterByArray[i]}>
             <option value=""></option>
             {fields}
           </select>
         </div>
         <div className="col-md-2">
-          <input type="text" className="form-control" id={"filterByValue" + i} ref={"filterByValue" + i}
+          <input type="text" className="form-control" id={"filterByValue" + i}
+            ref={"filterByValue" + i} key={"filterByValue" + i}
+            value={that.props.query.filterByValueArray[i]}
             onChange={that.handleFilterbyValueChange} />
         </div>
         <button type="button" className="btn btn-info"
@@ -83,6 +89,7 @@ var Controls = React.createClass({
           <label for="groupBy" className="col-md-2 control-label">Group By Field:</label>
           <div className="col-md-2">
             <select onChange={this.handleGroupbyChange} ref="groupBy" id="groupBy"
+                value={that.props.query.groupBy}
                 className="form-control">
               <option value=""></option>
               {fields}
@@ -93,6 +100,7 @@ var Controls = React.createClass({
           <label for="totalBy" className="col-md-2 control-label">Total By Field: </label>
           <div className="col-md-2">
             <select onChange={this.handleTotalbyChange} ref="totalBy" id="totalBy"
+                value={that.props.query.totalBy}
                 className="form-control">
               <option value=""></option>
               <option value="_count">Count</option>
@@ -103,12 +111,14 @@ var Controls = React.createClass({
         <div className="form-group">
           <label for="chartType" className="col-md-2 control-label">Chart Type: </label>
           <div className="col-md-2">
-            <select onChange={this.handleChartTypeChange} ref="chartType" id="chartType"
+            <select onChange={this.handleChartTypeChange}
+                ref="chartType"
+                id="chartType"
+                value={this.props.chartType}
                 className="form-control">
               <option value="bar">Bar</option>
               <option value="donut">Donut</option>
               <option value="pie">Pie</option>
-              {totals}
             </select>
           </div>
         </div>
