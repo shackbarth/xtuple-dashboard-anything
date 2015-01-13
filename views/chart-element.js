@@ -121,9 +121,9 @@ var ChartElement = React.createClass({
 
         :
 
-        <button type="button" className="btn btn-info pull-right"
+        <button type="button" className="btn btn-info btn-sm pull-right"
           onClick={this.showControls}>
-          <span className="glyphicon glyphicon-wrench"></span>
+          <span className="glyphicon glyphicon-wrench glyphicon-resize-small"></span>
         </button>
         }
       </div>

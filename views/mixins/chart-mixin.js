@@ -9,6 +9,9 @@ var ChartMixin = {
     this._chart = c3.generate(_.extend(
       {
         bindto: '#chart' + this.props.position,
+        size: {
+          height: 240
+        },
         data: {
           columns: [],
           type : this.chartType
