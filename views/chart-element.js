@@ -14,7 +14,7 @@ var React = require('react'),
 
 var ChartElement = React.createClass({
   propTypes: {
-    position: React.PropTypes.string
+    position: React.PropTypes.number
   },
 
   getInitialState: function () {
@@ -68,14 +68,15 @@ var ChartElement = React.createClass({
   // mockup until we get the route working
   fetchSavedQuery: function (callback) {
     // TODO: use this.props.position
-    console.log("position is", this.props.position);
-    var mockResult = '{"chartType":"donut","filterByArray":["status"],"filterByValueArray":["R"],"recordType":"Incident","groupBy":"category","totalBy":"_count"}';
+    var defaultResults = [
+      '{"chartType":"donut","filterByArray":["status"],"filterByValueArray":["R"],"recordType":"Incident","groupBy":"category","totalBy":"_count"}',
+      '{"chartType":"bar","filterByArray":[],"filterByValueArray":[],"recordType":"Incident","groupBy":"status","totalBy":"_count"}',
+      '{"chartType":"bar","filterByArray":[],"filterByValueArray":[],"recordType":"Incident","groupBy":"status","totalBy":"_count"}',
+      '{"chartType":"bar","filterByArray":[],"filterByValueArray":[],"recordType":"Incident","groupBy":"status","totalBy":"_count"}',
 
-    if(this.props.position === "2") {
-      mockResult = '{"chartType":"bar","filterByArray":[],"filterByValueArray":[],"recordType":"Incident","groupBy":"status","totalBy":"_count"}';
-    }
+    ];
 
-    var result = JSON.parse(mockResult);
+    var result = JSON.parse(defaultResults[this.props.position]);
     result.filterByArray = result.filterByArray || [];
     result.filterByValueArray = result.filterByValueArray || [];
     var chartType = result.chartType;

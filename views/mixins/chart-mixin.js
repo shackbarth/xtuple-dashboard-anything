@@ -8,7 +8,7 @@ var ChartMixin = {
   propTypes: {
     data: React.PropTypes.array,
     query: React.PropTypes.object,
-    position: React.PropTypes.string
+    position: React.PropTypes.number
   },
 
   render: function() {
@@ -18,7 +18,6 @@ var ChartMixin = {
   },
 
   create: function (el, props, state) {
-    console.log(this.props.query);
     this._chart = c3.generate(_.extend(
       {
         bindto: '#chart' + this.props.position,
