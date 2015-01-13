@@ -24,14 +24,6 @@ var Controls = React.createClass({
   getInitialState: function () {
     return {
       filterFields: 1,
-      /*
-      groupBy : '',
-      totalBy : '',
-      path: '',
-      fields: {},
-      filterByArray: [],
-      filterByValueArray: []
-      */
     };
   },
 
@@ -130,52 +122,33 @@ var Controls = React.createClass({
 
   setParentQuery: function (override) {
     this.props.setQuery(override);
-  /*  _.extend({
-      path: this.state.path,
-      groupBy: this.state.groupBy,
-      filterByArray: this.state.filterByArray,
-      filterByValueArray: this.state.filterByValueArray,
-      totalBy: this.state.totalBy
-    }, override));
-    */
   },
 
   handleResourceChange: function (event) {
     var recordType = event.target.value;
-    this.setParentQuery({recordType: recordType});
-    /*
-    this.setState({
+    this.setParentQuery({
       recordType: recordType,
-      path: this.props.schema.resources[recordType].methods.get.path,
-      fields: this.props.schema.schemas[recordType].properties,
-      // reset everything else
-      groupBy : '',
-      totalBy : '',
-      filterFields: 1,
+      groupBy: null,
+      totalBy: null,
       filterByArray: [],
-      filterByValueArray: []
+      filterByValuesArray: []
+    });
+    this.setState({
+      filterFields: 1,
     });
     this.refs.filterBy0.getDOMNode().value = "";
     this.refs.filterByValue0.getDOMNode().value = "";
     this.refs.groupBy.getDOMNode().value = "";
     this.refs.totalBy.getDOMNode().value = "";
-    */
   },
 
   handleChartTypeChange: function (event) {
     var fieldName = event.target.value;
-    //this.setState({
-    //  chartType: fieldName
-    //});
     this.props.setChartType(fieldName);
   },
 
   handleGroupbyChange: function (event) {
     var fieldName = event.target.value;
-    //this.setState({
-    //  groupBy: fieldName
-    //});
-
     this.setParentQuery({groupBy: fieldName});
   },
 
@@ -184,10 +157,6 @@ var Controls = React.createClass({
     var index = Number(event.target.id.replace("filterBy", ""));
     var filterByArray = _.clone(this.props.query.filterByArray);
     filterByArray[index] = fieldName;
-    //this.setState({
-    //  filterByArray: filterByArray
-    //});
-
     this.setParentQuery({filterByArray: filterByArray});
   },
 
@@ -196,19 +165,11 @@ var Controls = React.createClass({
     var index = Number(event.target.id.replace("filterByValue", ""));
     var filterByValueArray = _.clone(this.props.query.filterByValueArray);
     filterByValueArray[index] = fieldName;
-    //this.setState({
-    //  filterByValueArray: filterByValueArray
-    //});
-
     this.setParentQuery({filterByValueArray: filterByValueArray});
   },
 
   handleTotalbyChange: function (event) {
     var fieldName = event.target.value;
-    //this.setState({
-    //  totalBy: fieldName
-    //});
-
     this.setParentQuery({totalBy: fieldName});
   }
 

@@ -22,7 +22,7 @@ var App = React.createClass({
       schema: {},
       query: {
         filterByArray: [],
-        filterByValuesArray: []
+        filterByValueArray: []
       }
     };
   },
@@ -52,7 +52,6 @@ var App = React.createClass({
   },
 
   render: function () {
-    console.log("render");
     var chart;
     if(this.state.chartType === "bar") {
       chart = <BarChart
@@ -105,27 +104,27 @@ var App = React.createClass({
   },
 
   setQuery: function (query) {
+    if (!query.groupBy || !query.totalBy || !query.recordType) {
+      this.setState({data: []});
+    }
     this.setState({query: _.extend({}, this.state.query, query)});
   },
 
   fetchData: function () {
     var query = this.state.query;
 
-    if (!query.groupBy || !query.totalBy) {
+    if (!query.groupBy || !query.totalBy || !query.recordType) {
+      //this.setState({data: []});
       return;
     }
     if (_.isEqual(query, this.state.previousQuery)) {
       return;
     }
     this.state.previousQuery = _.clone(query);
-    var path = this.state.query.recordType &&
-      this.state.schema.resources[this.state.query.recordType].methods.get.path;
+    var path = this.state.schema.resources[this.state.query.recordType].methods.get.path;
 
-    path = path && path.substring(0, path.lastIndexOf("/"));
-
-    console.log("fetching data", path);
     var that = this,
-      url = "/" + org + "/browser-api/v1/" + path,
+      url = "/" + org + "/browser-api/v1/" + path.substring(0, path.lastIndexOf("/")),
       filter = {};
 
     _.times(query.filterByArray.length, function (i) {
@@ -149,7 +148,6 @@ var App = React.createClass({
           data: filter,
           dataType: "json",
           success: function (data) {
-            console.log("data success");
             that.groupChart(data.data.data, query);
           }.bind(this)
         });
