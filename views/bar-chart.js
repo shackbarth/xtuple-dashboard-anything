@@ -1,5 +1,6 @@
+"use strict";
 /**  @jsx React.DOM */
-React = require('react'),
+var React = require('react'),
   ChartMixin = require('./mixins/chart-mixin');
 
 var BarChart = React.createClass({
@@ -16,12 +17,13 @@ var BarChart = React.createClass({
   },
 
   propTypes: {
-    data: React.PropTypes.array
+    data: React.PropTypes.array,
+    position: React.PropTypes.string
   },
 
   render: function() {
     return (
-      <div id="chart" className="chart"></div>
+      <div id={"chart" + this.props.position} className="chart"></div>
     );
   }
 });

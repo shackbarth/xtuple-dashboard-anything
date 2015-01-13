@@ -5,7 +5,6 @@ var _ = require("lodash");
 var ChartMixin = {
 
   create: function (el, props, state) {
-    console.log(this, "will bind to .chart" + this.props.position);
     this._chart = c3.generate(_.extend(
       {
         bindto: '#chart' + this.props.position,

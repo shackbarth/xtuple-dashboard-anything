@@ -117,6 +117,10 @@ var ChartElement = React.createClass({
               setQuery={this.setQuery}
             />
           </Loader>
+          <button type="button" className="btn btn-info btn-sm pull-right"
+            onClick={this.hideControls}>
+            <span className="glyphicon glyphicon-minus glyphicon-resize-small"></span>
+          </button>
         </div>
 
         :
@@ -211,6 +215,10 @@ var ChartElement = React.createClass({
 
   setChartType: function (chartType) {
     this.setState({chartType: chartType});
+  },
+
+  hideControls: function () {
+    this.setState({showControls: false});
   },
 
   showControls: function () {
