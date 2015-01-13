@@ -80,19 +80,21 @@ var ChartElement = React.createClass({
   },
 
   render: function () {
-    //console.log("render", this.props.position, this.state.query);
     var chart;
     if(this.state.chartType === "bar") {
       chart = <BarChart
         data={this.state.data}
+        position={this.props.position}
       />;
     } else if(this.state.chartType === "donut") {
       chart = <DonutChart
         data={this.state.data}
+        position={this.props.position}
       />;
     } else {
       chart = <PieChart
         data={this.state.data}
+        position={this.props.position}
       />;
     }
 

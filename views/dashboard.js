@@ -27,10 +27,10 @@ var Dashboard = React.createClass({
           </div>
           <div>
             <div className="col-md-6">
-              <ChartElement position="1" />
+              <ChartElement position="1"></ChartElement>
             </div>
             <div className="col-md-6">
-              <ChartElement position="2" />
+              <ChartElement position="2"></ChartElement>
             </div>
           </div>
         </div>
