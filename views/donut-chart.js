@@ -1,5 +1,7 @@
+"use strict";
+
 /**  @jsx React.DOM */
-React = require('react'),
+var React = require('react'),
   ChartMixin = require('./mixins/chart-mixin');
 
 var DonutChart = React.createClass({

@@ -13,6 +13,10 @@ var React = require('react'),
   org = url.parse(window.location.href).pathname.split('/')[1];
 
 var ChartElement = React.createClass({
+  propTypes: {
+    position: React.PropTypes.string
+  },
+
   getInitialState: function () {
     return {
       chartType: 'bar',
@@ -63,6 +67,8 @@ var ChartElement = React.createClass({
 
   // mockup until we get the route working
   fetchSavedQuery: function (callback) {
+    // TODO: use this.props.position
+    console.log("position is", this.props.position);
     var mockResult = '{"chartType":"donut","filterByArray":["status"],"filterByValueArray":["R"],"recordType":"Incident","groupBy":"category","totalBy":"_count"}';
 
     var result = JSON.parse(mockResult);
@@ -74,6 +80,7 @@ var ChartElement = React.createClass({
   },
 
   render: function () {
+    //console.log("render", this.props.position, this.state.query);
     var chart;
     if(this.state.chartType === "bar") {
       chart = <BarChart
@@ -92,36 +99,31 @@ var ChartElement = React.createClass({
     this.fetchData();
 
     return (
-      <div className="container">
-        <div className="panel panel-info">
-          <div className="panel-heading">
-            <h3 className="panel-title">xTuple Dashboard Anything</h3>
-          </div>
-          <div className="panel-body">
-            {chart}
-          </div>
-        { this.state.showControls ?
-
-          <div className="panel-footer">
-            <Loader loaded={this.state.loaded}>
-              <Controls
-                chartType={this.state.chartType}
-                query={this.state.query}
-                schema={this.state.schema}
-                setChartType={this.setChartType}
-                setQuery={this.setQuery}
-              />
-            </Loader>
-          </div>
-
-          :
-
-          <button type="button" className="btn btn-info pull-right"
-            onClick={this.showControls}>
-            <span className="glyphicon glyphicon-wrench"></span>
-          </button>
-          }
+      <div className="panel panel-info">
+        <div className="panel-body">
+          {chart}
         </div>
+      { this.state.showControls ?
+
+        <div className="panel-footer">
+          <Loader loaded={this.state.loaded}>
+            <Controls
+              chartType={this.state.chartType}
+              query={this.state.query}
+              schema={this.state.schema}
+              setChartType={this.setChartType}
+              setQuery={this.setQuery}
+            />
+          </Loader>
+        </div>
+
+        :
+
+        <button type="button" className="btn btn-info pull-right"
+          onClick={this.showControls}>
+          <span className="glyphicon glyphicon-wrench"></span>
+        </button>
+        }
       </div>
     );
   },
@@ -216,4 +218,4 @@ var ChartElement = React.createClass({
 
 });
 
-React.render(<ChartElement />, window.document.getElementById('content'));
+module.exports = ChartElement;
