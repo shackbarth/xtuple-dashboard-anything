@@ -88,17 +88,23 @@ var ChartElement = React.createClass({
       success: function (data) {
         var result = data.data.result.length ?
           JSON.parse(data.data.result[0].userpref_value) :
-          defaultResults[that.props.position];
-        result.filterByArray = result.filterByArray || [];
-        result.filterByValueArray = result.filterByValueArray || [];
-        var chartType = result.chartType;
-        delete result.chartType;
-        callback(null, {query: result, chartType: chartType});
+          JSON.parse(defaultResults[that.props.position]);
+        that.massageSavedQuery(result, callback);
       },
       error: function (err) {
-        console.log("error fetching query", err);
+        var result = JSON.parse(defaultResults[that.props.position]);
+        that.massageSavedQuery(result, callback);
       }
     });
+  },
+
+  massageSavedQuery: function (result, callback) {
+    var query = _.extend({
+      filterByArray: [],
+      filterByValueArray: []
+    }, result);
+
+    callback(null, {query: _.omit(query, "chartType"), chartType: result.chartType});
   },
 
   render: function () {
