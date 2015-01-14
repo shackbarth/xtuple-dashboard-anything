@@ -1,6 +1,13 @@
 /**  @jsx React.DOM */
 'use strict';
 
+var defaultResults = [
+  '{"chartType":"donut","filterByArray":["status"],"filterByValueArray":["R"],"recordType":"Incident","groupBy":"category","totalBy":"_count"}',
+  '{"chartType":"bar","filterByArray":[],"filterByValueArray":[],"recordType":"Incident","groupBy":"status","totalBy":"_count"}',
+  '{"chartType":"bar","filterByArray":[],"filterByValueArray":[],"recordType":"Incident","groupBy":"status","totalBy":"_count"}',
+  '{"chartType":"bar","filterByArray":[],"filterByValueArray":[],"recordType":"Incident","groupBy":"status","totalBy":"_count"}',
+];
+
 var React = require('react'),
   $ = require('jquery'),
   _ = require('lodash'),
@@ -67,21 +74,31 @@ var ChartElement = React.createClass({
 
   // mockup until we get the route working
   fetchSavedQuery: function (callback) {
-    // TODO: use this.props.position
-    var defaultResults = [
-      '{"chartType":"donut","filterByArray":["status"],"filterByValueArray":["R"],"recordType":"Incident","groupBy":"category","totalBy":"_count"}',
-      '{"chartType":"bar","filterByArray":[],"filterByValueArray":[],"recordType":"Incident","groupBy":"status","totalBy":"_count"}',
-      '{"chartType":"bar","filterByArray":[],"filterByValueArray":[],"recordType":"Incident","groupBy":"status","totalBy":"_count"}',
-      '{"chartType":"bar","filterByArray":[],"filterByValueArray":[],"recordType":"Incident","groupBy":"status","totalBy":"_count"}',
+    var that = this;
 
-    ];
-
-    var result = JSON.parse(defaultResults[this.props.position]);
-    result.filterByArray = result.filterByArray || [];
-    result.filterByValueArray = result.filterByValueArray || [];
-    var chartType = result.chartType;
-    delete result.chartType;
-    callback(null, {query: result, chartType: chartType});
+    $.ajax({
+      url: '/' + org + '/browser-api/v1/services/user-preference/get-preference',
+      type: "POST",
+      dataType: "json",
+      data: {
+        attributes: [
+          "DashboardAnythingQuery" + this.props.position
+        ]
+      },
+      success: function (data) {
+        var result = data.data.result.length ?
+          JSON.parse(data.data.result[0].userpref_value) :
+          defaultResults[that.props.position];
+        result.filterByArray = result.filterByArray || [];
+        result.filterByValueArray = result.filterByValueArray || [];
+        var chartType = result.chartType;
+        delete result.chartType;
+        callback(null, {query: result, chartType: chartType});
+      },
+      error: function (err) {
+        console.log("error fetching query", err);
+      }
+    });
   },
 
   render: function () {
@@ -171,6 +188,13 @@ var ChartElement = React.createClass({
       return;
     }
     this.state.previousQuery = _.clone(query);
+
+    // save this query as a user preference
+    var savedQuery = _.extend({}, query, {chartType: this.state.chartType});
+    this.saveQuery(savedQuery);
+
+
+
     var path = this.state.schema.resources[this.state.query.recordType].methods.get.path;
 
     var that = this,
@@ -230,6 +254,27 @@ var ChartElement = React.createClass({
 
     this.setState({
       data: totalledData
+    });
+  },
+
+  saveQuery: function (query) {
+    $.ajax({
+      url: '/' + org + '/browser-api/v1/services/user-preference/commit-preference',
+      type: "POST",
+      dataType: "json",
+      data: {
+        attributes: [
+          "DashboardAnythingQuery" + this.props.position,
+          JSON.stringify(query)
+        ]
+      },
+      success: function (data) {
+        // nothing to do
+      }.bind(this),
+      error: function (err) {
+        // we're probably not logged in to the server
+        console.log("error saving query", err);
+      }.bind(this)
     });
   },
 
