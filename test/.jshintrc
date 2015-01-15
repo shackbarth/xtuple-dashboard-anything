@@ -1,0 +1,17 @@
+{
+  "globals": {
+    "describe": false,
+    "it": false
+  },
+  "node":true,
+  "indent":2,
+  "curly":true,
+  "eqeqeq":true,
+  "immed":true,
+  "latedef":true,
+  "undef":true,
+  "unused": "vars",
+  "strict":true,
+  "trailing":true,
+  "white":true
+}
