@@ -1,12 +1,7 @@
 /**  @jsx React.DOM */
 'use strict';
 
-var defaultResults = [
-  '{"chartType":"donut","filterByArray":["status"],"filterByValueArray":["R"],"recordType":"Incident","groupBy":"category","totalBy":"_count"}',
-  '{"chartType":"bar","filterByArray":[],"filterByValueArray":[],"recordType":"Incident","groupBy":"status","totalBy":"_count"}',
-  '{"chartType":"bar","filterByArray":[],"filterByValueArray":[],"recordType":"Incident","groupBy":"status","totalBy":"_count"}',
-  '{"chartType":"bar","filterByArray":[],"filterByValueArray":[],"recordType":"Incident","groupBy":"status","totalBy":"_count"}',
-];
+var defaultDefinitions = require("../util/default-definitions");
 
 var React = require('react'),
   $ = require('jquery'),
@@ -67,11 +62,11 @@ var ChartElement = React.createClass({
       success: function (data) {
         var result = data.data.result.length ?
           JSON.parse(data.data.result[0].userpref_value) :
-          JSON.parse(defaultResults[that.props.position]);
+          defaultDefinitions[that.props.position];
         callback(null, {definition: result});
       },
       error: function (err) {
-        var result = JSON.parse(defaultResults[that.props.position]);
+        var result = defaultDefinitions[that.props.position];
         callback(null, {definition: result});
       }
     });
@@ -124,7 +119,7 @@ var ChartElement = React.createClass({
 
         {
           this.state.definition.description ||
-          (this.state.definition.recordType + " by " + this.state.definition.groupBy)
+          ((this.state.definition.recordType || '') + " by " + (this.state.definition.groupBy || ''))
         }
         </div>
         <div className="panel-body">

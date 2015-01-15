@@ -146,7 +146,7 @@ var Controls = React.createClass({
 
   handleResourceChange: function (event) {
     var recordType = event.target.value;
-    this.setDefinition({
+    this.props.setDefinition({
       recordType: recordType,
       groupBy: null,
       totalBy: null,
