@@ -122,8 +122,7 @@ var ChartElement = React.createClass({
 
           }
 
-
-          {this.state.definition.recordType} by {this.state.definition.groupBy}
+          {this.state.definition.description}
         </div>
         <div className="panel-body">
           {chart}
@@ -145,16 +144,17 @@ var ChartElement = React.createClass({
     );
   },
 
-  setDefinition: function (definition) {
+  setDefinition: function (definitionAttr) {
+    var definition = _.extend({}, this.state.definition, definitionAttr);
     if (!definition.groupBy || !definition.totalBy || !definition.recordType) {
       this.setState({data: []});
     }
-    this.setState({definition: _.extend({}, this.state.definition, definition)});
+    this.setState({definition: definition});
   },
 
   fetchData: function () {
     var definition = this.state.definition,
-      query = _.omit(definition, ["chartType"]);
+      query = _.omit(definition, ["chartType", "description"]);
 
     if (!definition.groupBy ||
         !definition.totalBy ||
@@ -253,7 +253,7 @@ var ChartElement = React.createClass({
       }.bind(this),
       error: function (err) {
         // we're probably not logged in to the server
-        console.log("error saving query", err);
+        console.log("error saving definition", err);
       }.bind(this)
     });
   },

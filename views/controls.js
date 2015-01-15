@@ -126,6 +126,16 @@ var Controls = React.createClass({
             </select>
           </div>
         </div>
+        <div className="form-group">
+          <label for="chartType" className="col-md-5 control-label">Description: </label>
+          <div className="col-md-7">
+            <input onChange={this.handleDescriptionChange}
+                ref="description"
+                id="description"
+                value={this.props.definition.description}
+                className="form-control" />
+          </div>
+        </div>
       </form>
     );
   },
@@ -154,6 +164,10 @@ var Controls = React.createClass({
 
   handleChartTypeChange: function (event) {
     this.props.setDefinition({chartType: event.target.value});
+  },
+
+  handleDescriptionChange: function (event) {
+    this.props.setDefinition({description: event.target.value});
   },
 
   handleGroupbyChange: function (event) {
