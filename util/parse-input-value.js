@@ -1,10 +1,18 @@
 "use strict";
 var moment = require("moment");
 
+var operatorMap = {
+  ">": "GREATER_THAN",
+  ">=": "AT_LEAST",
+  "<": "LESS_THAN",
+  "<=": "AT_MOST"
+};
+
 module.exports = function (input) {
   // capture a leading >, >=, <, or <=
   var operator = input.match(/^[<>]=|^[<>]/);
   var value = operator ? input.substring(operator[0].length).trim() : input;
+  operator = operator ? operatorMap[operator[0]] : "EQUALS";
 
   // the value is in form +0 or -0 or +10 or -1342
   // i.e. a plus or minus, followed by a number
@@ -17,7 +25,7 @@ module.exports = function (input) {
   }
 
   return {
-    operator: operator ? operator[0] : "EQUALS",
+    operator: operator,
     value: value
   };
 

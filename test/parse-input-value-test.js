@@ -13,35 +13,35 @@ describe("parser", function () {
 
   it("should understand >=", function () {
     assert.deepEqual(parser(">= Foo"), {
-      operator: ">=",
+      operator: "AT_LEAST",
       value: "Foo"
     });
   });
 
   it("should understand >", function () {
     assert.deepEqual(parser("> Foo"), {
-      operator: ">",
+      operator: "GREATER_THAN",
       value: "Foo"
     });
   });
 
   it("should understand <=", function () {
     assert.deepEqual(parser("<= Foo"), {
-      operator: "<=",
+      operator: "AT_MOST",
       value: "Foo"
     });
   });
 
   it("should understand <", function () {
     assert.deepEqual(parser("< Foo"), {
-      operator: "<",
+      operator: "LESS_THAN",
       value: "Foo"
     });
   });
 
   it("should parse dates", function () {
     var parsed = parser("<= +0");
-    assert.equal(parsed.operator, "<=");
+    assert.equal(parsed.operator, "AT_MOST");
     var confirmValidDate = new Date(parsed.value);
     var invalidDate = new Date("foo");
     assert.notDeepEqual(confirmValidDate, invalidDate);

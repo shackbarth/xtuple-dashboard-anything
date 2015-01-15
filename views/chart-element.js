@@ -16,6 +16,7 @@ var React = require('react'),
   PieChart = require('./pie-chart'),
   DonutChart = require('./donut-chart'),
   BarChart = require('./bar-chart'),
+  parseInputValue = require("../util/parse-input-value"),
   url = require('url'),
   org = url.parse(window.location.href).pathname.split('/')[1];
 
@@ -208,8 +209,12 @@ var ChartElement = React.createClass({
       filter = {};
 
     _.times(query.filterByArray.length, function (i) {
+      var filterValue;
+
       if (query.filterByArray[i] && query.filterByValueArray[i]) {
-        filter["query[" + query.filterByArray[i] + "][EQUALS]"] = query.filterByValueArray[i];
+        filterValue = parseInputValue(query.filterByValueArray[i]);
+        filter["query[" + query.filterByArray[i] + "][" + filterValue.operator + "]"] =
+          filterValue.value;
       }
     });
 
