@@ -215,7 +215,8 @@ var ChartElement = React.createClass({
         return datum[options.groupBy].name ||
           datum[options.groupBy].code ||
           datum[options.groupBy].number ||
-          datum[options.groupBy].description;
+          datum[options.groupBy].description ||
+          datum[options.groupBy].username;
       });
     } else {
       groupedData = _.groupBy(data, options.groupBy);

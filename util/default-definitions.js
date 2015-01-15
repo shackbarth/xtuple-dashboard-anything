@@ -8,11 +8,11 @@ module.exports = [
       "targetClose"
     ],
     "filterByValueArray": [
-      "> +0",
-      "< +30"
+      ">= +0",
+      "<= +30"
     ],
     "recordType": "OpportunityListItem",
-    "groupBy": "owner",
+    "groupBy": "opportunityStage",
     "totalBy": "amount",
     "description": "Opportunities next 30 days"
   },
