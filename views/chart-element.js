@@ -122,7 +122,10 @@ var ChartElement = React.createClass({
 
           }
 
-          {this.state.definition.description}
+        {
+          this.state.definition.description ||
+          (this.state.definition.recordType + " by " + this.state.definition.groupBy)
+        }
         </div>
         <div className="panel-body">
           {chart}
