@@ -24,7 +24,7 @@ var Controls = React.createClass({
 
   getInitialState: function () {
     return {
-      filterFields: 1,
+      filterFields: this.props.query.filterByArray.length || 1,
     };
   },
 
@@ -61,10 +61,14 @@ var Controls = React.createClass({
             </select>
           </div>
         </div>
+        <div className="form-group">
+          <label className="col-md-5 control-label">Filter by Fields:</label>
+        </div>
+
     {_.times(this.state.filterFields, function (i) {
+        //<label for="filterBy" className="col-md-1 control-label">Filter</label>
       return (<div className="form-group" key={"formGroup" + i}>
-        <label for="filterBy" className="col-md-5 control-label">Filter By Field: </label>
-        <div className="col-md-7">
+        <div className="col-md-5">
           <select onChange={that.handleFilterbyChange} id={"filterBy" + i} ref={"filterBy" + i}
               key={"filterBy" + i} className="form-control"
               value={that.props.query.filterByArray[i]}>
@@ -72,17 +76,19 @@ var Controls = React.createClass({
             {fields}
           </select>
         </div>
-        <div className="col-md-7">
+        <div className="col-md-5">
           <input type="text" className="form-control" id={"filterByValue" + i}
             ref={"filterByValue" + i} key={"filterByValue" + i}
             value={that.props.query.filterByValueArray[i]}
             onChange={that.handleFilterbyValueChange} />
         </div>
-        <button type="button" className="btn btn-info"
-            style={i + 1 !== that.state.filterFields ? {display:"none"} : {}}
-            onClick={that.addFilterField}>
-          <span className="glyphicon glyphicon-plus"></span>
-        </button>
+        <div className="col-md-2">
+          <button type="button" className="btn btn-info"
+              style={i + 1 !== that.state.filterFields ? {display:"none"} : {}}
+              onClick={that.addFilterField}>
+            <span className="glyphicon glyphicon-plus"></span>
+          </button>
+        </div>
       </div>);
     })}
         <div className="form-group">
