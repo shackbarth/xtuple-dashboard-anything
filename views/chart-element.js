@@ -22,16 +22,16 @@ var React = require('react'),
 
 var ChartElement = React.createClass({
   propTypes: {
-    position: React.PropTypes.number
+    position: React.PropTypes.number,
+    loaded: React.PropTypes.bool,
+    schema: React.PropTypes.object
   },
 
   getInitialState: function () {
     return {
       chartType: 'bar',
       data: [],
-      loaded: false,
       showControls: false,
-      schema: {},
       query: {
         filterByArray: [],
         filterByValueArray: []
@@ -41,28 +41,6 @@ var ChartElement = React.createClass({
 
   componentDidMount: function () {
     var that = this;
-
-    // make sure that we're logged in
-    $.ajax({
-      url: '/' + org + '/browser-api/v1/resources/honorific?count=true',
-      dataType: "json",
-      success: function (data) {
-        // nothing to do
-      }.bind(this),
-      error: function (err) {
-        // we're probably not logged in to the server
-        window.location = '/' + org + '/logout';
-      }.bind(this)
-    });
-
-    // fetch the discovery document
-    $.ajax({
-      url: '/' + org + '/discovery/v1alpha1/apis/v1alpha1/rest',
-      dataType: "json",
-      success: function (data) {
-        this.setState({schema: data, loaded: true});
-      }.bind(this)
-    });
 
     this.fetchSavedQuery(function (err, result) {
       if (err) {
@@ -162,11 +140,11 @@ var ChartElement = React.createClass({
       { this.state.showControls &&
 
         <div className="panel-footer">
-          <Loader loaded={this.state.loaded}>
+          <Loader loaded={this.props.loaded}>
             <Controls
               chartType={this.state.chartType}
               query={this.state.query}
-              schema={this.state.schema}
+              schema={this.props.schema}
               setChartType={this.setChartType}
               setQuery={this.setQuery}
             />
@@ -188,7 +166,7 @@ var ChartElement = React.createClass({
   fetchData: function () {
     var query = this.state.query;
 
-    if (!query.groupBy || !query.totalBy || !query.recordType || !this.state.schema.resources) {
+    if (!query.groupBy || !query.totalBy || !query.recordType || !this.props.schema.resources) {
       return;
     }
     if (_.isEqual(query, this.state.previousQuery)) {
@@ -202,7 +180,7 @@ var ChartElement = React.createClass({
 
 
 
-    var path = this.state.schema.resources[this.state.query.recordType].methods.get.path;
+    var path = this.props.schema.resources[this.state.query.recordType].methods.get.path;
 
     var that = this,
       url = "/" + org + "/browser-api/v1/" + path.substring(0, path.lastIndexOf("/")),
