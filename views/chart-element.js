@@ -29,10 +29,10 @@ var ChartElement = React.createClass({
 
   getInitialState: function () {
     return {
-      chartType: 'bar',
       data: [],
       showControls: false,
-      query: {
+      definition: {
+        chartType: 'bar',
         filterByArray: [],
         filterByValueArray: []
       }
@@ -42,17 +42,17 @@ var ChartElement = React.createClass({
   componentDidMount: function () {
     var that = this;
 
-    this.fetchSavedQuery(function (err, result) {
+    this.fetchSavedDefinition(function (err, result) {
       if (err) {
         console.log("Error fetching saved query", err);
         return;
       }
-      that.setState({query: result.query, chartType: result.chartType});
+      that.setState({definition: result.definition});
     });
   },
 
   // mockup until we get the route working
-  fetchSavedQuery: function (callback) {
+  fetchSavedDefinition: function (callback) {
     var that = this;
 
     $.ajax({
@@ -68,45 +68,36 @@ var ChartElement = React.createClass({
         var result = data.data.result.length ?
           JSON.parse(data.data.result[0].userpref_value) :
           JSON.parse(defaultResults[that.props.position]);
-        that.massageSavedQuery(result, callback);
+        callback(null, {definition: result});
       },
       error: function (err) {
         var result = JSON.parse(defaultResults[that.props.position]);
-        that.massageSavedQuery(result, callback);
+        callback(null, {definition: result});
       }
     });
   },
 
-  massageSavedQuery: function (result, callback) {
-    var query = _.extend({
-      filterByArray: [],
-      filterByValueArray: []
-    }, result);
-
-    callback(null, {query: _.omit(query, "chartType"), chartType: result.chartType});
-  },
-
   render: function () {
     var chart;
-    if(this.state.chartType === "bar") {
+    if(this.state.definition.chartType === "bar") {
       chart = <BarChart
         key={String(Math.random())} // XXX force re-render
         data={this.state.data}
-        query={this.state.query}
+        definition={this.state.definition}
         position={this.props.position}
       />;
-    } else if(this.state.chartType === "donut") {
+    } else if(this.state.definition.chartType === "donut") {
       chart = <DonutChart
         key={String(Math.random())} // XXX force re-render
         data={this.state.data}
-        query={this.state.query}
+        definition={this.state.definition}
         position={this.props.position}
       />;
     } else {
       chart = <PieChart
         key={String(Math.random())} // XXX force re-render
         data={this.state.data}
-        query={this.state.query}
+        definition={this.state.definition}
         position={this.props.position}
       />;
     }
@@ -132,7 +123,7 @@ var ChartElement = React.createClass({
           }
 
 
-          {this.state.query.recordType} by {this.state.query.groupBy}
+          {this.state.definition.recordType} by {this.state.definition.groupBy}
         </div>
         <div className="panel-body">
           {chart}
@@ -142,11 +133,9 @@ var ChartElement = React.createClass({
         <div className="panel-footer">
           <Loader loaded={this.props.loaded}>
             <Controls
-              chartType={this.state.chartType}
-              query={this.state.query}
+              definition={this.state.definition}
               schema={this.props.schema}
-              setChartType={this.setChartType}
-              setQuery={this.setQuery}
+              setDefinition={this.setDefinition}
             />
           </Loader>
         </div>
@@ -156,31 +145,33 @@ var ChartElement = React.createClass({
     );
   },
 
-  setQuery: function (query) {
-    if (!query.groupBy || !query.totalBy || !query.recordType) {
+  setDefinition: function (definition) {
+    if (!definition.groupBy || !definition.totalBy || !definition.recordType) {
       this.setState({data: []});
     }
-    this.setState({query: _.extend({}, this.state.query, query)});
+    this.setState({definition: _.extend({}, this.state.definition, definition)});
   },
 
   fetchData: function () {
-    var query = this.state.query;
+    var definition = this.state.definition,
+      query = _.omit(definition, ["chartType"]);
 
-    if (!query.groupBy || !query.totalBy || !query.recordType || !this.props.schema.resources) {
+    if (!definition.groupBy ||
+        !definition.totalBy ||
+        !definition.recordType ||
+        !this.props.schema.resources) {
       return;
     }
+
+    // save the definition as a user preference
+    this.saveDefinition(definition);
+
     if (_.isEqual(query, this.state.previousQuery)) {
       return;
     }
     this.state.previousQuery = _.clone(query);
 
-    // save this query as a user preference
-    var savedQuery = _.extend({}, query, {chartType: this.state.chartType});
-    this.saveQuery(savedQuery);
-
-
-
-    var path = this.props.schema.resources[this.state.query.recordType].methods.get.path;
+    var path = this.props.schema.resources[definition.recordType].methods.get.path;
 
     var that = this,
       url = "/" + org + "/browser-api/v1/" + path.substring(0, path.lastIndexOf("/")),
@@ -246,7 +237,7 @@ var ChartElement = React.createClass({
     });
   },
 
-  saveQuery: function (query) {
+  saveDefinition: function (definition) {
     $.ajax({
       url: '/' + org + '/browser-api/v1/services/user-preference/commit-preference',
       type: "POST",
@@ -254,7 +245,7 @@ var ChartElement = React.createClass({
       data: {
         attributes: [
           "DashboardAnythingQuery" + this.props.position,
-          JSON.stringify(query)
+          JSON.stringify(definition)
         ]
       },
       success: function (data) {
@@ -265,10 +256,6 @@ var ChartElement = React.createClass({
         console.log("error saving query", err);
       }.bind(this)
     });
-  },
-
-  setChartType: function (chartType) {
-    this.setState({chartType: chartType});
   },
 
   hideControls: function () {

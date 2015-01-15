@@ -7,7 +7,7 @@ var ChartMixin = {
 
   propTypes: {
     data: React.PropTypes.array,
-    query: React.PropTypes.object,
+    definition: React.PropTypes.object,
     position: React.PropTypes.number
   },
 
@@ -31,7 +31,7 @@ var ChartMixin = {
         axis: {
           y: {
             label: { // ADD
-              text: this.props.query.totalBy === "_count" ? "Count" : this.props.query.totalBy,
+              text: this.props.definition.totalBy === "_count" ? "Count" : this.props.definition.totalBy,
               position: 'outer-middle'
             }
           }
