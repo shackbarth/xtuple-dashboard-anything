@@ -7,17 +7,25 @@ var React = require('react'),
   url = require('url'),
   org = url.parse(window.location.href).pathname.split('/')[1];
 
+/**
+  The dashboard consists of four chart elements, each of which
+  manages itself independently. But any shared resources (such
+  as the data model schema) is kept in the state here.
+*/
 var Dashboard = React.createClass({
   getInitialState: function () {
     return {
+      // has the schema been loaded from the discovery document?
+      // we want to suppress the controls component until so.
       loaded: false,
+      // loaded from the REST discovery document
       schema: {}
     };
   },
 
   componentDidMount: function () {
 
-    // make sure that we're logged in
+    // make sure that we're logged in by trying to query anything
     $.ajax({
       url: '/' + org + '/browser-api/v1/resources/honorific?count=true',
       dataType: "json",
@@ -26,6 +34,9 @@ var Dashboard = React.createClass({
       }.bind(this),
       error: function (err) {
         // we're probably not logged in to the server
+        // TODO: it would be nice to redirect to the login window
+        // in such a way as would keep the destination in mind for
+        // when login is successful
         window.location = '/' + org + '/logout';
       }.bind(this)
     });

@@ -4,6 +4,15 @@
 var React = require('react'),
   _ = require('lodash');
 
+/**
+  The form to determine the definition of the chart. Consists of
+  -Object name
+  -Filter field(s) with their filter value(s)
+  -Group-by field
+  -Total-by field
+  -Chart type
+  -Descriptive title
+*/
 var Controls = React.createClass({
   propTypes: {
     definition: React.PropTypes.object,
@@ -21,6 +30,7 @@ var Controls = React.createClass({
 
   getInitialState: function () {
     return {
+      // filterFields is the count of filter fields that we're currently displaying
       // TODO: don't count empty array elements as worthy
       filterFields: this.props.definition.filterByArray.length || 1,
     };
@@ -64,7 +74,6 @@ var Controls = React.createClass({
         </div>
 
     {_.times(this.state.filterFields, function (i) {
-        //<label for="filterBy" className="col-md-1 control-label">Filter</label>
       return (<div className="form-group" key={"formGroup" + i}>
         <div className="col-md-5">
           <select onChange={that.handleFilterbyChange} id={"filterBy" + i} ref={"filterBy" + i}
@@ -144,6 +153,10 @@ var Controls = React.createClass({
     this.setState({filterFields: this.state.filterFields + 1});
   },
 
+  /**
+    When we change the record type we want to reset the majority of the form
+    because the fields are no longer relevant to the new object.
+  */
   handleResourceChange: function (event) {
     var recordType = event.target.value;
     this.props.setDefinition({
@@ -162,6 +175,9 @@ var Controls = React.createClass({
     this.refs.totalBy.getDOMNode().value = "";
   },
 
+  /**
+    These all shout the change up to the parent
+  */
   handleChartTypeChange: function (event) {
     this.props.setDefinition({chartType: event.target.value});
   },

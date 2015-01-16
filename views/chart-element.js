@@ -1,23 +1,28 @@
 /**  @jsx React.DOM */
 'use strict';
 
-var defaultDefinitions = require("../util/default-definitions");
-
 var React = require('react'),
   $ = require('jquery'),
   _ = require('lodash'),
   Loader = require('react-loader'),
+  url = require('url'),
   Controls = require('./controls'),
   PieChart = require('./pie-chart'),
   DonutChart = require('./donut-chart'),
   BarChart = require('./bar-chart'),
   parseInputValue = require("../util/parse-input-value"),
-  url = require('url'),
+  defaultDefinitions = require("../util/default-definitions"),
   org = url.parse(window.location.href).pathname.split('/')[1];
 
+/**
+  A chart element consists of a c3 chart and a set of expandable
+  controls to manage the definition of that chart. The definition
+  of each chart are saved as user preferences so that they can
+  stick from one session to the next
+*/
 var ChartElement = React.createClass({
   propTypes: {
-    position: React.PropTypes.number,
+    position: React.PropTypes.number, // 0 - 3 for the four chart onscreen
     loaded: React.PropTypes.bool,
     schema: React.PropTypes.object
   },
@@ -46,7 +51,11 @@ var ChartElement = React.createClass({
     });
   },
 
-  // mockup until we get the route working
+  /**
+    Fetch the definition of the chart from userpreferences. If none are found,
+    or upon error (the pre-4.9 server won't support these calls) then use
+    some nice defaults
+  */
   fetchSavedDefinition: function (callback) {
     var that = this;
 
@@ -72,6 +81,12 @@ var ChartElement = React.createClass({
     });
   },
 
+  /**
+    Render:
+      -The title of the chart
+      -The chart
+      -The controls, unless they're set to be hidden
+  */
   render: function () {
     var chart;
     if(this.state.definition.chartType === "bar") {
@@ -97,6 +112,9 @@ var ChartElement = React.createClass({
       />;
     }
 
+    // XXX the re-render, insofar as it's a proxy for a change in state,
+    // seems like an expedient time to possibly requery the server. There
+    // might be a react-ier place to put this
     this.fetchData();
 
     return (
@@ -110,6 +128,7 @@ var ChartElement = React.createClass({
           </button>
 
           :
+
           <button type="button" className="btn btn-info btn-sm pull-right"
             onClick={this.showControls}>
             <span className="glyphicon glyphicon-wrench glyphicon-resize-small"></span>
@@ -142,14 +161,21 @@ var ChartElement = React.createClass({
     );
   },
 
+  /**
+    The callback function that we pass down to the controls component so
+    that it might reach back and make changes to the definition in this
+    component's state
+  */
   setDefinition: function (definitionAttr) {
     var definition = _.extend({}, this.state.definition, definitionAttr);
     if (!definition.groupBy || !definition.totalBy || !definition.recordType) {
+      // ensure that we wipe out the chart if the user has borked the query
       this.setState({data: []});
     }
     this.setState({definition: definition});
   },
 
+  // XXX big and hairy. break down into smaller pieces
   fetchData: function () {
     var definition = this.state.definition,
       query = _.omit(definition, ["chartType", "description"]);
@@ -207,6 +233,10 @@ var ChartElement = React.createClass({
     });
   },
 
+  /**
+    The data coming back from REST is not in the format that c3 will want it.
+    Group the data intelligently before we set the state.
+  */
   groupChart: function (data, options) {
     var groupedData;
     if (data && data.length > 0 && _.isObject(data[0][options.groupBy])) {
@@ -236,6 +266,9 @@ var ChartElement = React.createClass({
     });
   },
 
+  /**
+    Persist the current definition of the chart as a user preference in the database
+  */
   saveDefinition: function (definition) {
     $.ajax({
       url: '/' + org + '/browser-api/v1/services/user-preference/commit-preference',
@@ -249,11 +282,11 @@ var ChartElement = React.createClass({
       },
       success: function (data) {
         // nothing to do
-      }.bind(this),
+      },
       error: function (err) {
-        // we're probably not logged in to the server
+        // maybe we're on a pre-4.9 server?
         console.log("error saving definition", err);
-      }.bind(this)
+      }
     });
   },
 
@@ -264,7 +297,6 @@ var ChartElement = React.createClass({
   showControls: function () {
     this.setState({showControls: true});
   }
-
 
 });
 

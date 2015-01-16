@@ -8,6 +8,10 @@ var operatorMap = {
   "<=": "AT_MOST"
 };
 
+/**
+  Quick implementation to understand different operators and relative dates.
+  See the test file for use-cases.
+*/
 module.exports = function (input) {
   // capture a leading >, >=, <, or <=
   var operator = input.match(/^[<>]=|^[<>]/);
@@ -20,6 +24,9 @@ module.exports = function (input) {
   // as not being a date-offset. That's because the filter field is
   // general purpose and not just a date widget. For many types,
   // 0 should just mean 0.
+  //
+  // The "correct" way to get this right is to pass in the type of the field.
+  ///
   if(/^[+-]\d+$/.test(value)) {
     value = moment().add(Number(value), "days").format();
   }
