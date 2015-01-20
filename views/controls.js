@@ -78,7 +78,8 @@ var Controls = React.createClass({
         <div className="col-md-5">
           <select onChange={that.handleFilterbyChange} id={"filterBy" + i} ref={"filterBy" + i}
               key={"filterBy" + i} className="form-control"
-              value={that.props.definition.filterByArray[i]}>
+              value={that.props.definition.filterByArray.length > i &&
+                that.props.definition.filterByArray[i]}>
             <option value=""></option>
             {fields}
           </select>
@@ -86,7 +87,9 @@ var Controls = React.createClass({
         <div className="col-md-5">
           <input type="text" className="form-control" id={"filterByValue" + i}
             ref={"filterByValue" + i} key={"filterByValue" + i}
-            value={that.props.definition.filterByValueArray[i]}
+            value={that.props.definition.filterByValueArray &&
+              that.props.definition.filterByValueArray.length > i &&
+              that.props.definition.filterByValueArray[i]}
             onChange={that.handleFilterbyValueChange} />
         </div>
         <div className="col-md-2">

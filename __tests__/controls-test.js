@@ -1,5 +1,7 @@
 /** @jsx React.DOM */
 
+"use strict";
+
 var _ = require("lodash");
 
 // __tests__/control-test.js
@@ -7,10 +9,24 @@ jest.dontMock('../views/controls');
 jest.dontMock('lodash');
 
 describe('Test Chart Controls', function () {
-  var props;
+  var props, definition;
   var React = require('react/addons');
   var Controls = require('../views/controls.js');
   var TestUtils = React.addons.TestUtils;
+  var expectedCallback1 = {
+    recordType : 'Foo',
+    groupBy : null,
+    totalBy : null,
+    filterByArray : [  ],
+    filterByValuesArray : [  ]
+  };
+  var expectedCallback2 = {
+    groupBy : 'propA'
+  };
+  var expectedCallback3 = {
+    totalBy : '_count'
+  };
+
   var expectedFetch = {
     path: 'foo-get',
     groupBy: 'propA',
@@ -44,15 +60,19 @@ describe('Test Chart Controls', function () {
           }
         }
       },
-      fetchData: _.noop
+      setDefinition: _.noop,
+      definition: {
+        filterByArray: [],
+        filterByValuesArray: []
+      }
     };
-    spyOn(props, "fetchData");
+    spyOn(props, "setDefinition");
   });
 
   it('Ensure component can be rendered with correct properties', function () {
     // Render a control in the document
     var controls = TestUtils.renderIntoDocument(
-      <Controls schema={props.schema} getData={_.noop} fetchData={props.fetchData} />
+      <Controls schema={props.schema} definition={props.definition} setDefinition={props.setDefinition} />
     );
 
     // Verify controls are rendered
@@ -72,6 +92,8 @@ describe('Test Chart Controls', function () {
     var totalbyDropdown = controls.refs.totalBy.getDOMNode();
     TestUtils.Simulate.change(totalbyDropdown, {target: {value: "_count"}});
 
-    expect(props.fetchData).toHaveBeenCalledWith(expectedFetch);
+    expect(props.setDefinition).toHaveBeenCalledWith(expectedCallback1);
+    expect(props.setDefinition).toHaveBeenCalledWith(expectedCallback2);
+    expect(props.setDefinition).toHaveBeenCalledWith(expectedCallback3);
   });
 });
