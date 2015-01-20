@@ -28,7 +28,7 @@ module.exports = function (input) {
   // The "correct" way to get this right is to pass in the type of the field.
   ///
   if(/^[+-]\d+$/.test(value)) {
-    value = moment().add(Number(value), "days").format();
+    value = moment().add(Number(value), "days").format("MM/DD/YYYY");
   }
 
   return {
