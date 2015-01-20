@@ -3,7 +3,7 @@
 var _ = require("lodash");
 var React = require('react');
 
-var ChartMixin = {
+var C3Chart = React.createClass({
 
   propTypes: {
     data: React.PropTypes.array,
@@ -26,7 +26,7 @@ var ChartMixin = {
         },
         data: {
           columns: [],
-          type : this.chartType
+          type : this.props.chartType
         },
         axis: {
           y: {
@@ -77,7 +77,6 @@ var ChartMixin = {
     //this.destroy(el);
   }
 
+});
 
-};
-
-module.exports = ChartMixin;
+module.exports = C3Chart;

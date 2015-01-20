@@ -7,9 +7,7 @@ var React = require('react'),
   Loader = require('react-loader'),
   url = require('url'),
   Controls = require('./controls'),
-  PieChart = require('./pie-chart'),
-  DonutChart = require('./donut-chart'),
-  BarChart = require('./bar-chart'),
+  C3Chart = require('./c3-chart'),
   parseInputValue = require("../util/parse-input-value"),
   defaultDefinitions = require("../util/default-definitions"),
   org = url.parse(window.location.href).pathname.split('/')[1];
@@ -88,29 +86,6 @@ var ChartElement = React.createClass({
       -The controls, unless they're set to be hidden
   */
   render: function () {
-    var chart;
-    if(this.state.definition.chartType === "bar") {
-      chart = <BarChart
-        key={String(Math.random())} // XXX force re-render
-        data={this.state.data}
-        definition={this.state.definition}
-        position={this.props.position}
-      />;
-    } else if(this.state.definition.chartType === "donut") {
-      chart = <DonutChart
-        key={String(Math.random())} // XXX force re-render
-        data={this.state.data}
-        definition={this.state.definition}
-        position={this.props.position}
-      />;
-    } else {
-      chart = <PieChart
-        key={String(Math.random())} // XXX force re-render
-        data={this.state.data}
-        definition={this.state.definition}
-        position={this.props.position}
-      />;
-    }
 
     // XXX the re-render, insofar as it's a proxy for a change in state,
     // seems like an expedient time to possibly requery the server. There
@@ -142,7 +117,13 @@ var ChartElement = React.createClass({
         }
         </div>
         <div className="panel-body">
-          {chart}
+          <C3Chart
+            chartType={this.state.definition.chartType}
+            key={String(Math.random())} // XXX force re-render
+            data={this.state.data}
+            definition={this.state.definition}
+            position={this.props.position}
+          />;
         </div>
       { this.state.showControls &&
 
