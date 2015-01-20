@@ -3,6 +3,11 @@
 var _ = require("lodash");
 var React = require('react');
 
+/**
+  The chart itself. Depending on the incoming prop.chartType, this can be
+  a bar, chart, or donut chart. C3 does all the work, and also provides
+  the abstration layer between charts.
+*/
 var C3Chart = React.createClass({
 
   propTypes: {
@@ -37,7 +42,7 @@ var C3Chart = React.createClass({
           }
         }
       },
-      this.generateOptions
+      this.generateOptions // not currently used
     ));
     this.update(el, state);
   },
