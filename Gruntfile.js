@@ -1,3 +1,4 @@
+"use strict";
 
 module.exports = function (grunt) {
 
@@ -5,8 +6,8 @@ module.exports = function (grunt) {
     pkg: grunt.file.readJSON('package.json'),
     watch: {
       react: {
-        files: ['views/**/*.js', 'Gruntfile.js'],
-        tasks: ['browserify', 'jshint']
+        files: ['views/**/*.js', 'util/**/*.js', 'Gruntfile.js'],
+        tasks: ['browserify']
       }
     },
     browserify: {
@@ -14,7 +15,7 @@ module.exports = function (grunt) {
         transform: [ require('grunt-react').browserify ]
       },
       client: {
-        src: ['views/**/*.js', 'views/**/*.jsx', 'models/**/*.js'],
+        src: ['views/**/*.js', 'views/**/*.jsx', 'util/**/*.js'],
         dest: 'public/js/app.built.js'
       }
     },

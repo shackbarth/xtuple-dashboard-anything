@@ -1,33 +1,38 @@
 /**  @jsx React.DOM */
-React = require('react'),
+"use strict";
+
+var React = require('react'),
   _ = require('lodash');
 
+/**
+  The form to determine the definition of the chart. Consists of
+  -Object name
+  -Filter field(s) with their filter value(s)
+  -Group-by field
+  -Total-by field
+  -Chart type
+  -Descriptive title
+*/
 var Controls = React.createClass({
   propTypes: {
+    definition: React.PropTypes.object,
     schema: React.PropTypes.object,
-    fetchData: React.PropTypes.func,
-    setChartType: React.PropTypes.func
+    setDefinition: React.PropTypes.func
   },
 
   getDefaultProps: function () {
     return {
-      schema: {
-        resources: {}
-      },
-      fetchData: null,
-      setChartType: null
+      definition: {},
+      schema: {},
+      setDefinition: null
     };
   },
 
   getInitialState: function () {
     return {
-      groupBy : '',
-      totalBy : '',
-      path: '',
-      fields: {},
-      filterFields: 1,
-      filterByArray: [],
-      filterByValueArray: []
+      // filterFields is the count of filter fields that we're currently displaying
+      // TODO: don't count empty array elements as worthy
+      filterFields: this.props.definition.filterByArray.length || 1,
     };
   },
 
@@ -37,11 +42,13 @@ var Controls = React.createClass({
       return <option value={key} key={key}>{key}</option>;
     });
 
-    var fields = _.map(this.state.fields, function (value, key) {
+    var recordType = this.props.definition.recordType;
+    var resourceFields = recordType && this.props.schema.schemas[recordType].properties;
+    var fields = _.map(resourceFields, function (value, key) {
       return <option value={key} key={key}>{value.title}</option>;
     });
 
-    var totals = _.map(_.omit(this.state.fields, function (value) {
+    var totals = _.map(_.omit(resourceFields, function (value) {
       return value.type !== "number";
     }), function (value, key) {
       return <option value={key} key={key}>{value.title}</option>;
@@ -50,41 +57,55 @@ var Controls = React.createClass({
     return (
       <form className="form-horizontal" role="form">
         <div className="form-group">
-          <label for="businessObject" ref="businessObjectLabel" className="col-md-2 control-label">Business Object:</label>
-          <div className="col-md-3">
-            <select onChange={this.handleResourceChange} id="businessObject" ref="businessObject"
+          <label for="businessObject" ref="businessObjectLabel" className="col-md-5 control-label">Business Object:</label>
+          <div className="col-md-7">
+            <select onChange={this.handleResourceChange}
+                id="businessObject"
+                ref="businessObject"
+                value={that.props.definition.recordType}
                 className="form-control">
               <option value=""></option>
               {resources}
             </select>
           </div>
         </div>
-    {_.times(this.state.filterFields, function (i) {
+        <div className="form-group">
+          <label className="col-md-5 control-label">Filter by Fields:</label>
+        </div>
 
-      return <div className="form-group">
-        <label for="filterBy" className="col-md-2 control-label">Filter By Field: </label>
-        <div className="col-md-2">
+    {_.times(this.state.filterFields, function (i) {
+      return (<div className="form-group" key={"formGroup" + i}>
+        <div className="col-md-5">
           <select onChange={that.handleFilterbyChange} id={"filterBy" + i} ref={"filterBy" + i}
-              className="form-control">
+              key={"filterBy" + i} className="form-control"
+              value={that.props.definition.filterByArray.length > i &&
+                that.props.definition.filterByArray[i]}>
             <option value=""></option>
             {fields}
           </select>
         </div>
-        <div className="col-md-2">
-          <input type="text" className="form-control" id={"filterByValue" + i} ref={"filterByValue" + i}
+        <div className="col-md-5">
+          <input type="text" className="form-control" id={"filterByValue" + i}
+            ref={"filterByValue" + i} key={"filterByValue" + i}
+            value={that.props.definition.filterByValueArray &&
+              that.props.definition.filterByValueArray.length > i &&
+              that.props.definition.filterByValueArray[i]}
             onChange={that.handleFilterbyValueChange} />
         </div>
-        <button type="button" className="btn btn-info"
-            style={i + 1 !== that.state.filterFields ? {display:"none"} : {}}
-            onClick={that.addFilterField}>
-          <span className="glyphicon glyphicon-plus"></span>
-        </button>
-      </div>
+        <div className="col-md-2">
+          <button type="button" className="btn btn-info"
+              style={i + 1 !== that.state.filterFields ? {display:"none"} : {}}
+              onClick={that.addFilterField}>
+            <span className="glyphicon glyphicon-plus"></span>
+          </button>
+        </div>
+      </div>);
     })}
         <div className="form-group">
-          <label for="groupBy" className="col-md-2 control-label">Group By Field:</label>
-          <div className="col-md-2">
+          <label for="groupBy" className="col-md-5 control-label">Group By Field:</label>
+          <div className="col-md-7">
             <select onChange={this.handleGroupbyChange} ref="groupBy" id="groupBy"
+                value={that.props.definition.groupBy}
                 className="form-control">
               <option value=""></option>
               {fields}
@@ -92,9 +113,10 @@ var Controls = React.createClass({
           </div>
         </div>
         <div className="form-group">
-          <label for="totalBy" className="col-md-2 control-label">Total By Field: </label>
-          <div className="col-md-2">
+          <label for="totalBy" className="col-md-5 control-label">Total By Field: </label>
+          <div className="col-md-7">
             <select onChange={this.handleTotalbyChange} ref="totalBy" id="totalBy"
+                value={that.props.definition.totalBy}
                 className="form-control">
               <option value=""></option>
               <option value="_count">Count</option>
@@ -103,15 +125,27 @@ var Controls = React.createClass({
           </div>
         </div>
         <div className="form-group">
-          <label for="chartType" className="col-md-2 control-label">Chart Type: </label>
-          <div className="col-md-2">
-            <select onChange={this.handleChartTypeChange} ref="chartType" id="chartType"
+          <label for="chartType" className="col-md-5 control-label">Chart Type: </label>
+          <div className="col-md-7">
+            <select onChange={this.handleChartTypeChange}
+                ref="chartType"
+                id="chartType"
+                value={this.props.definition.chartType}
                 className="form-control">
               <option value="bar">Bar</option>
               <option value="donut">Donut</option>
               <option value="pie">Pie</option>
-              {totals}
             </select>
+          </div>
+        </div>
+        <div className="form-group">
+          <label for="chartType" className="col-md-5 control-label">Description: </label>
+          <div className="col-md-7">
+            <input onChange={this.handleDescriptionChange}
+                ref="description"
+                id="description"
+                value={this.props.definition.description}
+                className="form-control" />
           </div>
         </div>
       </form>
@@ -122,80 +156,61 @@ var Controls = React.createClass({
     this.setState({filterFields: this.state.filterFields + 1});
   },
 
-  fetchData: function (override) {
-    this.props.fetchData(_.extend({
-      path: this.state.path,
-      groupBy: this.state.groupBy,
-      filterByArray: this.state.filterByArray,
-      filterByValueArray: this.state.filterByValueArray,
-      totalBy: this.state.totalBy
-    }, override));
-  },
-
+  /**
+    When we change the record type we want to reset the majority of the form
+    because the fields are no longer relevant to the new object.
+  */
   handleResourceChange: function (event) {
     var recordType = event.target.value;
-    this.setState({
+    this.props.setDefinition({
       recordType: recordType,
-      path: this.props.schema.resources[recordType].methods.get.path,
-      fields: this.props.schema.schemas[recordType].properties,
-      // reset everything else
-      // TODO: this isn't necessarily clearing all the fields off the DOM
-      groupBy : '',
-      totalBy : '',
-      filterFields: 1,
+      groupBy: null,
+      totalBy: null,
       filterByArray: [],
-      filterByValueArray: []
+      filterByValuesArray: []
     });
+    this.setState({
+      filterFields: 1,
+    });
+    this.refs.filterBy0.getDOMNode().value = "";
+    this.refs.filterByValue0.getDOMNode().value = "";
+    this.refs.groupBy.getDOMNode().value = "";
+    this.refs.totalBy.getDOMNode().value = "";
   },
 
+  /**
+    These all shout the change up to the parent
+  */
   handleChartTypeChange: function (event) {
-    var fieldName = event.target.value;
-    this.setState({
-      chartType: fieldName
-    });
-    this.props.setChartType(fieldName);
+    this.props.setDefinition({chartType: event.target.value});
+  },
+
+  handleDescriptionChange: function (event) {
+    this.props.setDefinition({description: event.target.value});
   },
 
   handleGroupbyChange: function (event) {
-    var fieldName = event.target.value;
-    this.setState({
-      groupBy: fieldName
-    });
-
-    this.fetchData({groupBy: fieldName});
+    this.props.setDefinition({groupBy: event.target.value});
   },
 
   handleFilterbyChange: function (event) {
     var fieldName = event.target.value;
     var index = Number(event.target.id.replace("filterBy", ""));
-    var filterByArray = _.clone(this.state.filterByArray);
+    var filterByArray = _.clone(this.props.definition.filterByArray);
     filterByArray[index] = fieldName;
-    this.setState({
-      filterByArray: filterByArray
-    });
-
-    this.fetchData({filterByArray: filterByArray});
+    this.props.setDefinition({filterByArray: filterByArray});
   },
 
   handleFilterbyValueChange: function (event) {
     var fieldName = event.target.value;
     var index = Number(event.target.id.replace("filterByValue", ""));
-    var filterByValueArray = _.clone(this.state.filterByValueArray);
+    var filterByValueArray = _.clone(this.props.definition.filterByValueArray);
     filterByValueArray[index] = fieldName;
-    this.setState({
-      filterByValueArray: filterByValueArray
-    });
-
-    this.fetchData({filterByValueArray: filterByValueArray});
+    this.props.setDefinition({filterByValueArray: filterByValueArray});
   },
 
   handleTotalbyChange: function (event) {
-    var fieldName = event.target.value;
-    this.setState({
-      totalBy: fieldName
-    });
-
-    this.fetchData({totalBy: fieldName});
+    this.props.setDefinition({totalBy: event.target.value});
   }
 
 });

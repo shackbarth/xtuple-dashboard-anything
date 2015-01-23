@@ -1,7 +1,11 @@
 {
   "globals": {
-    "c3": false,
-    "window": false
+    "beforeEach": false,
+    "jest": false,
+    "describe": false,
+    "spyOn": false,
+    "it": false,
+    "expect": false
   },
   "node":true,
   "indent":2,

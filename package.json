@@ -1,6 +1,6 @@
 {
   "name": "xtuple-dashboard-anything",
-  "version": "0.1.0",
+  "version": "0.1.3",
   "description": "Dashboards",
   "scripts": {
     "postinstall": "bower install && grunt",
@@ -31,16 +31,21 @@
     "bower": "^1.3.12",
     "grunt": "^0.4.5",
     "grunt-browserify": "^3.2.1",
+    "grunt-cli": "^0.1.13",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-jsxhint": "^0.4.0",
     "grunt-react": "^0.10.0",
     "jquery": "^2.1.1",
     "jsxhint": "^0.9.0",
     "lodash": "^2.4.1",
+    "moment": "^2.9.0",
     "react": "^0.12.1",
-    "react-tools": "^0.12.1"
+    "react-loader": "^1.0.1",
+    "react-tools": "^0.12.1",
+    "spin": "0.0.1"
   },
   "devDependencies": {
+    "chai": "^1.10.0",
     "grunt-cli": "^0.1.13",
     "jest-cli": "^0.2.1"
   },
