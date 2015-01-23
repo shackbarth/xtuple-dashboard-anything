@@ -19,7 +19,7 @@ of xtuple-dashboard-anything from the Enyo database config screen.
 $ cd xtuple-dashboard-anything
 $ npm install -g grunt-cli
 $ npm install
-$ grunt watch
+$ ./node_modules/grunt-cli/bin/grunt watch
 $ cd ../xtuple
 $ npm link ../xtuple-dashboard-anything
 $ npm link xtuple-dashboard-anything
