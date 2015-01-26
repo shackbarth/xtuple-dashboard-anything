@@ -8,9 +8,19 @@ var React = require('react'),
   url = require('url'),
   Controls = require('./controls'),
   C3Chart = require('./c3-chart'),
+  ChartActions = require('../actions/ChartActions'),
+  ChartDataStore = require('../stores/ChartDataStore'),
   parseInputValue = require("../util/parse-input-value"),
   defaultDefinitions = require("../util/default-definitions"),
   org = url.parse(window.location.href).pathname.split('/')[1];
+
+function getStateFromStores() {
+  return {
+    threads: ChartDataStore.getAllChrono(),
+    currentThreadID: ThreadStore.getCurrentID(),
+    unreadCount: UnreadThreadStore.getCount()
+  };
+};
 
 /**
   A chart element consists of a c3 chart and a set of expandable
@@ -26,7 +36,9 @@ var ChartElement = React.createClass({
   },
 
   getInitialState: function () {
-    return {
+    return getStateFromStores();
+    /*
+    {
       data: [],
       showControls: false,
       definition: {
@@ -35,6 +47,7 @@ var ChartElement = React.createClass({
         filterByValueArray: []
       }
     };
+    */
   },
 
   componentDidMount: function () {
@@ -158,6 +171,7 @@ var ChartElement = React.createClass({
 
   // XXX big and hairy. break down into smaller pieces
   fetchData: function () {
+    console.log("fetch data");
     var definition = this.state.definition,
       query = _.omit(definition, ["chartType", "description"]);
 
@@ -175,6 +189,9 @@ var ChartElement = React.createClass({
       return;
     }
     this.state.previousQuery = _.clone(query);
+
+    console.log("sendign chart action");
+    ChartActions.create("hi there");
 
     var path = this.props.schema.resources[definition.recordType].methods.get.path;
 

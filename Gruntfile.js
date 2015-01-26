@@ -6,7 +6,8 @@ module.exports = function (grunt) {
     pkg: grunt.file.readJSON('package.json'),
     watch: {
       react: {
-        files: ['views/**/*.js', 'util/**/*.js', 'Gruntfile.js'],
+        files: ['actions/**/*.js', 'dispatcher/**/*.js',
+          'views/**/*.js', 'stores/**/*.js', 'util/**/*.js', 'Gruntfile.js'],
         tasks: ['browserify']
       }
     },

@@ -8,8 +8,9 @@ var ChartActions = {
    * @param  {string} text
    */
   create: function(text) {
+    console.log("dispatching to ", text, AppDispatcher);
     AppDispatcher.dispatch({
-      actionType: "hello",// TodoConstants.TODO_CREATE,
+      actionType: "foo",// TodoConstants.TODO_CREATE,
       text: text
     });
   }
