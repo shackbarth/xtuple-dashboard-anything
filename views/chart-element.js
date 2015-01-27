@@ -10,7 +10,8 @@ var React = require('react'),
   C3Chart = require('./c3-chart'),
   parseInputValue = require("../util/parse-input-value"),
   defaultDefinitions = require("../util/default-definitions"),
-  org = url.parse(window.location.href).pathname.split('/')[1];
+  org = url.parse(window.location.href).pathname.split('/')[1],
+  ROW_LIMIT = 20; // possibly make configurable
 
 /**
   A chart element consists of a c3 chart and a set of expandable
@@ -117,13 +118,26 @@ var ChartElement = React.createClass({
         }
         </div>
         <div className="panel-body">
+        { this.state.rowCount > ROW_LIMIT ?
+
+          <div className="row-limit-message">
+            { this.state.rowCount } records requested. Only {ROW_LIMIT} results are
+            allowed for operational dashboards. Please restrict your filters.
+            Or perhaps you are interested in analytics-grade Business
+            Intelligence? If so, contact your sales rep!
+          </div>
+
+        :
+
           <C3Chart
             chartType={this.state.definition.chartType}
             key={String(Math.random())} // XXX force re-render
             data={this.state.data}
             definition={this.state.definition}
             position={this.props.position}
-          />;
+          />
+
+        }
         </div>
       { this.state.showControls &&
 
@@ -198,13 +212,14 @@ var ChartElement = React.createClass({
       data: _.extend({}, filter, {count: true}),
       dataType: "json",
       success: function (countData) {
-        if (countData.data.data[0].count > 100) {
-          alert("Too large a query for operational dashboard. Restrict your filter or invest in real BI!");
+        var rowCount = countData.data.data[0].count;
+        that.setState({rowCount: rowCount});
+        if (rowCount > ROW_LIMIT) {
           return;
         }
         $.ajax({
           url: url,
-          data: filter,
+          data: _.extend({}, filter, {rowlimit: ROW_LIMIT}),
           dataType: "json",
           success: function (data) {
             that.groupChart(data.data.data, query);
