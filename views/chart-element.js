@@ -11,7 +11,7 @@ var React = require('react'),
   parseInputValue = require("../util/parse-input-value"),
   defaultDefinitions = require("../util/default-definitions"),
   org = url.parse(window.location.href).pathname.split('/')[1],
-  ROW_LIMIT = 20; // possibly make configurable
+  ROW_LIMIT = 200; // possibly make configurable
 
 /**
   A chart element consists of a c3 chart and a set of expandable
