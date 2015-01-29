@@ -1,6 +1,6 @@
 {
   "name": "xtuple-dashboard-anything",
-  "version": "0.1.3",
+  "version": "0.1.5",
   "description": "Dashboards",
   "scripts": {
     "postinstall": "bower install && grunt",
