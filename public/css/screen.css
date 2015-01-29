@@ -25,3 +25,9 @@ body {
   margin: 4px;
   color: #fff;
 }
+
+.row-limit-message {
+  padding: 20px;
+  margins: 20px;
+  border: 1px solid blue;
+}
