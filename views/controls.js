@@ -37,17 +37,17 @@ var Controls = React.createClass({
   },
 
   render: function () {
-    var resources = _.map(this.props.schema.resources, (value, key) => {
+    let resources = _.map(this.props.schema.resources, (value, key) => {
       return <option value={key} key={key}>{key}</option>;
     });
 
-    var recordType = this.props.definition.recordType;
-    var resourceFields = recordType && this.props.schema.schemas[recordType].properties;
-    var fields = _.map(resourceFields, (value, key) => {
+    let recordType = this.props.definition.recordType;
+    let resourceFields = recordType && this.props.schema.schemas[recordType].properties;
+    let fields = _.map(resourceFields, (value, key) => {
       return <option value={key} key={key}>{value.title}</option>;
     });
 
-    var totals = _.map(_.omit(resourceFields, value => {
+    let totals = _.map(_.omit(resourceFields, value => {
       return value.type !== "number";
     }), (value, key) => {
       return <option value={key} key={key}>{value.title}</option>;
@@ -160,9 +160,9 @@ var Controls = React.createClass({
     because the fields are no longer relevant to the new object.
   */
   handleResourceChange: function (event) {
-    var recordType = event.target.value;
+    let recordType = event.target.value;
     this.props.setDefinition({
-      recordType: recordType,
+      recordType,
       groupBy: null,
       totalBy: null,
       filterByArray: [],
@@ -193,19 +193,19 @@ var Controls = React.createClass({
   },
 
   handleFilterbyChange: function (event) {
-    var fieldName = event.target.value;
-    var index = Number(event.target.id.replace("filterBy", ""));
-    var filterByArray = _.clone(this.props.definition.filterByArray);
+    let fieldName = event.target.value;
+    let index = Number(event.target.id.replace("filterBy", ""));
+    let filterByArray = _.clone(this.props.definition.filterByArray);
     filterByArray[index] = fieldName;
-    this.props.setDefinition({filterByArray: filterByArray});
+    this.props.setDefinition({filterByArray});
   },
 
   handleFilterbyValueChange: function (event) {
-    var fieldName = event.target.value;
-    var index = Number(event.target.id.replace("filterByValue", ""));
-    var filterByValueArray = _.clone(this.props.definition.filterByValueArray);
+    let fieldName = event.target.value;
+    let index = Number(event.target.id.replace("filterByValue", ""));
+    let filterByValueArray = _.clone(this.props.definition.filterByValueArray);
     filterByValueArray[index] = fieldName;
-    this.props.setDefinition({filterByValueArray: filterByValueArray});
+    this.props.setDefinition({filterByValueArray});
   },
 
   handleTotalbyChange: function (event) {

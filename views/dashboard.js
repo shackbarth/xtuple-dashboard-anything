@@ -45,9 +45,9 @@ var Dashboard = React.createClass({
     $.ajax({
       url: `/${org}/discovery/v1alpha1/apis/v1alpha1/rest`,
       dataType: "json",
-      success: function (data) {
+      success: (data) => {
         this.setState({schema: data, loaded: true});
-      }.bind(this)
+      }
     });
 
   },
