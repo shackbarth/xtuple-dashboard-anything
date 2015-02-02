@@ -12,7 +12,11 @@ module.exports = function (grunt) {
     },
     browserify: {
       options: {
-        transform: [ require('grunt-react').browserify ]
+        browserifyOptions: {
+          debug: true, // sourcemaps
+          extensions: ['.jsx', '.js'] // consider jsx files as modules
+        },
+        transform: [ require("6to5ify") ]
       },
       client: {
         src: ['views/**/*.js', 'views/**/*.jsx', 'util/**/*.js'],

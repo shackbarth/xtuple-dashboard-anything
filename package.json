@@ -28,6 +28,7 @@
   },
   "homepage": "https://github.com/xtuple/xtuple-dashboard-anything",
   "dependencies": {
+    "6to5ify": "^4.0.0",
     "bower": "^1.3.12",
     "grunt": "^0.4.5",
     "grunt-browserify": "^3.2.1",

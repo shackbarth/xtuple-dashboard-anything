@@ -3,6 +3,7 @@
     "c3": false,
     "window": false
   },
+  "esnext":true,
   "node":true,
   "indent":2,
   "curly":true,

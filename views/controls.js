@@ -37,20 +37,19 @@ var Controls = React.createClass({
   },
 
   render: function () {
-    var that = this;
-    var resources = _.map(this.props.schema.resources, function (value, key) {
+    var resources = _.map(this.props.schema.resources, (value, key) => {
       return <option value={key} key={key}>{key}</option>;
     });
 
     var recordType = this.props.definition.recordType;
     var resourceFields = recordType && this.props.schema.schemas[recordType].properties;
-    var fields = _.map(resourceFields, function (value, key) {
+    var fields = _.map(resourceFields, (value, key) => {
       return <option value={key} key={key}>{value.title}</option>;
     });
 
-    var totals = _.map(_.omit(resourceFields, function (value) {
+    var totals = _.map(_.omit(resourceFields, value => {
       return value.type !== "number";
-    }), function (value, key) {
+    }), (value, key) => {
       return <option value={key} key={key}>{value.title}</option>;
     });
 
@@ -62,7 +61,7 @@ var Controls = React.createClass({
             <select onChange={this.handleResourceChange}
                 id="businessObject"
                 ref="businessObject"
-                value={that.props.definition.recordType}
+                value={this.props.definition.recordType}
                 className="form-control">
               <option value=""></option>
               {resources}
@@ -73,13 +72,13 @@ var Controls = React.createClass({
           <label className="col-md-5 control-label">Filter by Fields:</label>
         </div>
 
-    {_.times(this.state.filterFields, function (i) {
+    {_.times(this.state.filterFields, i => {
       return (<div className="form-group" key={"formGroup" + i}>
         <div className="col-md-5">
-          <select onChange={that.handleFilterbyChange} id={"filterBy" + i} ref={"filterBy" + i}
+          <select onChange={this.handleFilterbyChange} id={"filterBy" + i} ref={"filterBy" + i}
               key={"filterBy" + i} className="form-control"
-              value={that.props.definition.filterByArray.length > i &&
-                that.props.definition.filterByArray[i]}>
+              value={this.props.definition.filterByArray.length > i &&
+                this.props.definition.filterByArray[i]}>
             <option value=""></option>
             {fields}
           </select>
@@ -87,15 +86,15 @@ var Controls = React.createClass({
         <div className="col-md-5">
           <input type="text" className="form-control" id={"filterByValue" + i}
             ref={"filterByValue" + i} key={"filterByValue" + i}
-            value={that.props.definition.filterByValueArray &&
-              that.props.definition.filterByValueArray.length > i &&
-              that.props.definition.filterByValueArray[i]}
-            onChange={that.handleFilterbyValueChange} />
+            value={this.props.definition.filterByValueArray &&
+              this.props.definition.filterByValueArray.length > i &&
+              this.props.definition.filterByValueArray[i]}
+            onChange={this.handleFilterbyValueChange} />
         </div>
         <div className="col-md-2">
           <button type="button" className="btn btn-info"
-              style={i + 1 !== that.state.filterFields ? {display:"none"} : {}}
-              onClick={that.addFilterField}>
+              style={i + 1 !== this.state.filterFields ? {display:"none"} : {}}
+              onClick={this.addFilterField}>
             <span className="glyphicon glyphicon-plus"></span>
           </button>
         </div>
@@ -105,7 +104,7 @@ var Controls = React.createClass({
           <label for="groupBy" className="col-md-5 control-label">Group By Field:</label>
           <div className="col-md-7">
             <select onChange={this.handleGroupbyChange} ref="groupBy" id="groupBy"
-                value={that.props.definition.groupBy}
+                value={this.props.definition.groupBy}
                 className="form-control">
               <option value=""></option>
               {fields}
@@ -116,7 +115,7 @@ var Controls = React.createClass({
           <label for="totalBy" className="col-md-5 control-label">Total By Field: </label>
           <div className="col-md-7">
             <select onChange={this.handleTotalbyChange} ref="totalBy" id="totalBy"
-                value={that.props.definition.totalBy}
+                value={this.props.definition.totalBy}
                 className="form-control">
               <option value=""></option>
               <option value="_count">Count</option>
