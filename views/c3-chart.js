@@ -48,7 +48,7 @@ var C3Chart = React.createClass({
   },
 
   update: function (el, state) {
-    var data = _.map(state.data, function (datum) {
+    var data = _.map(state.data, datum => {
       return [datum.key, datum.total];
     });
     this._chart.load({

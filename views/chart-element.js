@@ -59,12 +59,12 @@ var ChartElement = React.createClass({
     var that = this;
 
     $.ajax({
-      url: '/' + org + '/browser-api/v1/services/user-preference/get-preference',
+      url: `/${org}/browser-api/v1/services/user-preference/get-preference`,
       type: "POST",
       dataType: "json",
       data: {
         attributes: [
-          "DashboardAnythingQuery" + this.props.position
+          `DashboardAnythingQuery${this.props.position}`
         ]
       },
       success: function (data) {
@@ -114,7 +114,7 @@ var ChartElement = React.createClass({
 
         {
           this.state.definition.description ||
-          ((this.state.definition.recordType || '') + " by " + (this.state.definition.groupBy || ''))
+          `${this.state.definition.recordType || ''} by ${this.state.definition.groupBy || ''}`
         }
         </div>
         <div className="panel-body">
@@ -193,7 +193,7 @@ var ChartElement = React.createClass({
     var path = this.props.schema.resources[definition.recordType].methods.get.path;
 
     var that = this,
-      url = "/" + org + "/browser-api/v1/" + path.substring(0, path.lastIndexOf("/")),
+      url = `/${org}/browser-api/v1/${path.substring(0, path.lastIndexOf("/"))}`,
       filter = {};
 
     _.times(query.filterByArray.length, function (i) {
@@ -201,7 +201,7 @@ var ChartElement = React.createClass({
 
       if (query.filterByArray[i] && query.filterByValueArray[i]) {
         filterValue = parseInputValue(query.filterByValueArray[i]);
-        filter["query[" + query.filterByArray[i] + "][" + filterValue.operator + "]"] =
+        filter[`query[${query.filterByArray[i]}][${filterValue.operator}]`] =
           filterValue.value;
       }
     });
@@ -267,12 +267,12 @@ var ChartElement = React.createClass({
   */
   saveDefinition: function (definition) {
     $.ajax({
-      url: '/' + org + '/browser-api/v1/services/user-preference/commit-preference',
+      url: `/${org}/browser-api/v1/services/user-preference/commit-preference`,
       type: "POST",
       dataType: "json",
       data: {
         attributes: [
-          "DashboardAnythingQuery" + this.props.position,
+          `DashboardAnythingQuery${this.props.position}`,
           JSON.stringify(definition)
         ]
       },

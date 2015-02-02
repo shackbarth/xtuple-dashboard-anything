@@ -27,23 +27,23 @@ var Dashboard = React.createClass({
 
     // make sure that we're logged in by trying to query anything
     $.ajax({
-      url: '/' + org + '/browser-api/v1/resources/honorific?count=true',
+      url: `/${org}/browser-api/v1/resources/honorific?count=true`,
       dataType: "json",
-      success: function (data) {
+      success: (data) => {
         // nothing to do
-      }.bind(this),
-      error: function (err) {
+      },
+      error: (err) => {
         // we're probably not logged in to the server
         // TODO: it would be nice to redirect to the login window
         // in such a way as would keep the destination in mind for
         // when login is successful
-        window.location = '/' + org + '/logout';
-      }.bind(this)
+        window.location = `/${org}/logout`;
+      }
     });
 
     // fetch the discovery document
     $.ajax({
-      url: '/' + org + '/discovery/v1alpha1/apis/v1alpha1/rest',
+      url: `/${org}/discovery/v1alpha1/apis/v1alpha1/rest`,
       dataType: "json",
       success: function (data) {
         this.setState({schema: data, loaded: true});
